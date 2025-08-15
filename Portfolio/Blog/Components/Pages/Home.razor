@@ -1,0 +1,95 @@
+﻿@page "/"
+@using BlazorBootstrap
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<div class="container mt-5 bg-dark text-light p-4 rounded">
+    <header class="mb-5 text-center">
+        <h1 class="display-4 fw-bold">Portefølje for 4. semester</h1>
+        <p class="lead text-secondary">Dette er en hjemmeside til at følge min udvikling indenfor IT-sikkerhed og DevOps</p>
+    </header>
+
+    <div class="row">
+        <!-- Blog list -->
+        <div class="col-md-4">
+            <div class="list-group">
+                @foreach (var post in BlogPosts.OrderByDescending(p => p.PublishDate))
+                {
+                    var isActive = SelectedPost?.Id == post.Id;
+                    <button class="list-group-item list-group-item-action 
+                                   @(isActive ? "active bg-primary text-white border-primary" : "bg-secondary text-light border-secondary")"
+                            @onclick="() => SelectPost(post)">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@post.Title</h5>
+                            <small>@post.PublishDate.ToString("MMM dd, yyyy")</small>
+                        </div>
+                        <p class="mb-1 text-muted">@post.Summary</p>
+                    </button>
+                }
+            </div>
+        </div>
+
+        <!-- Selected blog content -->
+        <div class="col-md-8">
+            @if (SelectedPost is not null)
+            {
+                <div class="card bg-secondary text-light shadow-sm border-primary">
+                    <div class="card-body">
+                        <h2 class="card-title">@SelectedPost.Title</h2>
+                        <p class="text-muted">@SelectedPost.PublishDate.ToString("MMMM dd, yyyy")</p>
+                        <p class="card-text">@SelectedPost.Content</p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card bg-secondary text-light border-secondary">
+                    <div class="card-body text-muted">
+                        Vælg et indlæg fra listen for at se det her.
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .list-group-item {
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .list-group-item:hover {
+        background-color: #444 !important;
+        color: white !important;
+    }
+</style>
+
+@code {
+    public record BlogPost(int Id, string Title, string Summary, string Content, DateTime PublishDate);
+
+    List<BlogPost> BlogPosts = new()
+    {
+        new(1, "Getting Started with Blazor", "A beginner's guide to building your first Blazor app.",
+            "Blazor lets you build interactive web UIs using C#. This guide will walk you through the basics of creating a Blazor project...",
+            DateTime.Now.AddDays(-10)),
+        new(2, "Deploying to Azure", "Learn how to publish your Blazor app to Azure in minutes.",
+            "Deploying to Azure is straightforward using Visual Studio's built-in publishing tools. First, you need an Azure account...",
+            DateTime.Now.AddDays(-5)),
+        new(3, "Using Components Effectively", "Tips and best practices for reusable Blazor components.",
+            "Components are the building blocks of Blazor applications. This article covers patterns for building reusable and maintainable components...",
+            DateTime.Now.AddDays(-2))
+    };
+
+    BlogPost? SelectedPost;
+
+    protected override void OnInitialized()
+    {
+        // Default to latest post
+        SelectedPost = BlogPosts.OrderByDescending(p => p.PublishDate).FirstOrDefault();
+    }
+
+    void SelectPost(BlogPost post)
+    {
+        SelectedPost = post;
+    }
+}

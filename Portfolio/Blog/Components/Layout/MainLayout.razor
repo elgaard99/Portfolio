@@ -1,0 +1,43 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page bg-dark text-light min-vh-100">
+    @* <div class="sidebar"> *@
+    @*     <NavMenu/> *@
+    @* </div> *@
+
+    <main>
+        @* <div class="top-row px-4 bg-secondary text-light"> *@
+        @*     <a href="https://learn.microsoft.com/aspnet/core/" target="_blank" class="text-light"> *@
+        @*         About *@
+        @*     </a> *@
+        @* </div> *@
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui" class="bg-danger text-light p-2" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload text-white text-decoration-underline">Reload</a>
+    <span class="dismiss" style="cursor:pointer;">🗙</span>
+</div>
+
+<style>
+    html, body {
+        background-color: #121212; /* fallback dark background */
+    }
+
+    a {
+        transition: color 0.2s ease;
+    }
+    a:hover {
+        color: #0d6efd; /* Bootstrap primary color */
+    }
+
+    /* Error UI hover styling */
+    #blazor-error-ui .dismiss:hover {
+        color: #ffcccc;
+    }
+</style>
