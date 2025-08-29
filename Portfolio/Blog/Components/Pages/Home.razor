@@ -22,10 +22,10 @@
                                    @(isActive ? "active bg-primary text-white border-primary" : "bg-secondary text-light border-secondary")"
                             @onclick="() => SelectPost(post)">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">@post.Title</h5>
+                            <h5 class="mb-1 fw-bold">@post.Title</h5>
                             <small>@post.PublishDate.ToString("MMM dd, yyyy")</small>
                         </div>
-                        <p class="mb-1 text-muted">@post.Summary</p>
+                        <p>Mål: @post.Goal</p>
                     </button>
                 }
             </div>
@@ -38,7 +38,7 @@
                 <div class="card bg-secondary text-light shadow-sm border-primary">
                     <div class="card-body">
                         <h2 class="card-title">@SelectedPost.Title</h2>
-                        <p class="text-muted">@SelectedPost.PublishDate.ToString("MMMM dd, yyyy")</p>
+                        <p class="text-muted">@SelectedPost.PublishDate.ToString("MMMM dd, yyyy"), Mål: @SelectedPost.Goal</p>
                         <p class="card-text">@SelectedPost.Content</p>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
 </style>
 
 @code {
-    public record BlogPost(int Id, string Title, string Summary, string Content, DateTime PublishDate);
+    public record BlogPost(int Id, string Title, string Goal, string Content, DateTime PublishDate);
 
     List<BlogPost> BlogPosts = new()
     {
@@ -76,9 +76,9 @@
         new(2, "Uge 34", "HashiCorp Vault og ZeroTrust",
             "Denne uge er gået med at få opsat på HashiCorps Vault, der skal tage sig af vores nøgler og logins, samt opsat roller hertil der skal gøre det nemt at administrere, hvem der har adgang til hvad. Til det er ZeroTrust ideelt da det handler om verificer eksplicit, least privileged og assume breach. Nu mangler bare en at få styr på auditing, så vi kan se, hvem der har til gået hvad og hvornår, samt lavet en backup plan, hvis uheldet skulle være ude. På den måde har vi nogle information at gå ud fra, hvis en konto skulle være blevet hacket, og en backup til at komme hurtigt online igen.\nNæste skridt er mere i devops retningen. Vi er nemlig kommet godt i gang med kodningen, og allerede nu har vi udfordringer med at vi alle skal have en database der up to date og ens. Derfor vil jeg kigge mere ind i at få sat et udviklings-miljø op.",
             new DateTime(2025, 8, 24)),
-        // new(3, "Using Components Effectively", "Tips and best practices for reusable Blazor components.",
-        //     "Components are the building blocks of Blazor applications. This article covers patterns for building reusable and maintainable components...",
-        //     DateTime.Now.AddDays(-2))
+         new(3, "Dev Environment", "At oprette et test-miljø, hvor der er adgang til en database med test-data.",
+             "I starten fik jeg vejledning af AI, der hurtigt fik mig på sporet af at en Docker container formentlig var det bedste valg her. Jeg kunne også gå med at spinde en server op til hver af os, som vi kunne arbejde i. Først fik jeg lavet en docker-compose, der startede ud med en mssql-server, og som gemte ændringer til database-schemaet, men udfordringen bestod i at få seed'et en database. Til sidst lavede jeg en Dockerfile, der kopierede en hel database ind i image'et, hvorefter compose kørte et script - log ind på serveren, og kør et SQL-statement, der tilføjede databasen til serveren.",
+            new DateTime(2025, 8, 31)) 
     };
 
     BlogPost? SelectedPost;
