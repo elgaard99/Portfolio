@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog", "Blog\Blog.csproj", "{616EE43B-CB3B-44D8-A3E7-10B36D143882}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Editor", "Editor\Editor.csproj", "{23121D2F-87BD-4987-8B83-A63E886A47EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio", "Portfolio\Portfolio.csproj", "{08DD9245-CAAD-42E4-BA51-17CD0B3B4CAF}"
@@ -12,10 +10,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{616EE43B-CB3B-44D8-A3E7-10B36D143882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{616EE43B-CB3B-44D8-A3E7-10B36D143882}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{616EE43B-CB3B-44D8-A3E7-10B36D143882}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{616EE43B-CB3B-44D8-A3E7-10B36D143882}.Release|Any CPU.Build.0 = Release|Any CPU
 		{23121D2F-87BD-4987-8B83-A63E886A47EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{23121D2F-87BD-4987-8B83-A63E886A47EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23121D2F-87BD-4987-8B83-A63E886A47EB}.Release|Any CPU.ActiveCfg = Release|Any CPU

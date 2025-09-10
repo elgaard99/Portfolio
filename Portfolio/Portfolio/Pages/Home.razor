@@ -1,7 +1,28 @@
-﻿@page "/"
+﻿@page "/{culture}/"
+@inject NavigationManager Nav
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+<button @onclick="@(() => HandleClick("/about-me"))">Go to About Me</button>
+
+@code {
+    private void HandleClick(string uri)
+    {
+        Nav.NavigateTo($"{Culture}{uri}");
+    }
+    
+    [Parameter] public string Culture { get; set; } = "da";
+
+    protected override void OnParametersSet()
+    {
+        var ci = new CultureInfo(Culture);
+        CultureInfo.DefaultThreadCurrentCulture = ci;
+        CultureInfo.DefaultThreadCurrentUICulture = ci;
+        CultureInfo.CurrentCulture = ci;
+        CultureInfo.CurrentUICulture = ci;
+    }
+}

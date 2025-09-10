@@ -1,5 +1,22 @@
-<h3>AboutMe</h3>
+@page "/{culture}/about-me"
+@inject IStringLocalizer<AboutMe> Localizer
+
+<PageTitle>About Me</PageTitle>
+<p>CurrentUICulture: @CultureInfo.CurrentUICulture.Name</p>
+<p>CurrentCulture: @CultureInfo.CurrentCulture.Name</p>
+<h3>@Localizer["MyStory_Header"]</h3>
 
 @code {
-    
+    [Parameter] public string Culture { get; set; } = "da";
+
+    protected override void OnParametersSet()
+    {
+        var ci = new CultureInfo(Culture);
+        CultureInfo.DefaultThreadCurrentCulture = ci;
+        CultureInfo.DefaultThreadCurrentUICulture = ci;
+        CultureInfo.CurrentCulture = ci;
+        CultureInfo.CurrentUICulture = ci;
+        
+        base.OnParametersSet();
+    }
 }

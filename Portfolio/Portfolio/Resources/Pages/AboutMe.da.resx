@@ -22,25 +22,23 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
     </resheader>
-    <data name="Why.Header" xml:space="preserve">
+    <data name="Why_Header" xml:space="preserve">
         <value>Hvorfor Datamatiker?</value>
         <comment>Explain the reason / motivation.</comment>
     </data>
 
-    <data name="Privat.Header" xml:space="preserve">
+    <data name="Privat_Header" xml:space="preserve">
         <value>Privat</value>
         <comment>Indicates that the content is private/confidential.</comment>
     </data>
-    <data name="MyStory.Body" xml:space="preserve">
-        <value>Efter at have cyklet hele livet, og været professionel i en årrække i Italien og Frankrig, har jeg nu valgt at rette mit fokus mod software udvikling og it-management. I starten af 2024 startede jeg på den online datamatiker uddannelse, hvor jeg har opnået kompetencer indefor C#, SQL, HTML, Python, WPF, DevOps, DevSecOps, netværk, cloud-computing og projektledelse.</value>
-    </data>
-    <data name="MyStory.Header" xml:space="preserve">
-        <value>Omkring Mig</value>
-    </data>
-    <data name="Privat.Body" xml:space="preserve">
+    <data name="Privat_Body" xml:space="preserve">
         <value>Når jeg ikke sidder foran computeren, holder jeg meget af at være aktiv og komme ud i naturen, om det så er cykling, løb eller at stå på ski. Jeg elsker også at se nye steder og møde nye kulturer, og jeg prøver derfor at rejse så ofte jeg kan. Men jeg sætter også pris på at komme ned i gear med en god bog, eller være sammen med mine venner over mad, drinks eller brætspil.</value>
     </data>
-    <data name="Why.Body" xml:space="preserve">
+ 
+    <data name="MyStory_Header" xml:space="preserve">
+        <value>Omkring</value>
+    </data>
+   <data name="Why_Body" xml:space="preserve">
         <value>Allerede som helt ung begyndte jeg at lege med en Arduino, samt kode lidt html og Python, da jeg elsker de endeløse muligheder der er med it. Derudover elsker jeg også at tilegne mig nye kompetencer, og her tiltaler it-verdens evige udvikling mig.</value>
     </data>
 </root>
