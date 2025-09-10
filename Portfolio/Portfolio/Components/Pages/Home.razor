@@ -1,0 +1,31 @@
+﻿@page "/"
+
+@inject ILanguageContainerService languageContainer
+@inject IKeysAccessor Accessor
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<p>@Accessor.Welcome</p>
+
+<button @onclick="SetFrench">American</button>
+<button @onclick="SetDanish">Danish</button>
+@code
+{
+    void SetFrench()
+    {
+        languageContainer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+    }
+    
+    void SetDanish()
+    {
+        languageContainer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo("da-DK"));
+    }
+
+    protected override void OnInitialized()
+    {
+        languageContainer.InitLocalizedComponent(this);
+        base.OnInitialized();
+    }
+}
