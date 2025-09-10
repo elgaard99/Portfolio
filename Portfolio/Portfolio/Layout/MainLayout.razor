@@ -9,7 +9,7 @@
     <main>
         <div class="top-row px-4">
             <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("da"))">Dansk</button>
-            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("en"))">English</button>
+            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("af"))">English</button>
             <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("fr"))">Francais</button>
         </div>
 
@@ -37,3 +37,5 @@
         Nav.NavigateTo(newUri);
     }
 }
+
+@* Er der nogen herinde, som har erfaring med Microsoft Localization og Globalization pakker? Jeg er pt. stuck fordi jeg kun kan få vist de danske Page.da.resx, og default Page.resx *@

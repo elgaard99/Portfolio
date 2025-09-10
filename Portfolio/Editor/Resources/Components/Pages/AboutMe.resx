@@ -23,22 +23,24 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
     </resheader>
     <data name="Why_Header" xml:space="preserve">
-        <value>Hvorfor Datamatiker?</value>
+        <value>Why Developer?</value>
         <comment>Explain the reason / motivation.</comment>
     </data>
 
-    <data name="Privat_Header" xml:space="preserve">
-        <value>Privat</value>
+    <data name="Private_Header" xml:space="preserve">
+        <value>Privately</value>
         <comment>Indicates that the content is private/confidential.</comment>
     </data>
-    <data name="Privat_Body" xml:space="preserve">
-        <value>Når jeg ikke sidder foran computeren, holder jeg meget af at være aktiv og komme ud i naturen, om det så er cykling, løb eller at stå på ski. Jeg elsker også at se nye steder og møde nye kulturer, og jeg prøver derfor at rejse så ofte jeg kan. Men jeg sætter også pris på at komme ned i gear med en god bog, eller være sammen med mine venner over mad, drinks eller brætspil.</value>
-    </data>
- 
-    <data name="MyStory_Header" xml:space="preserve">
-        <value>About</value>
+    <data name="Private_Body" xml:space="preserve">
+        <value />
     </data>
     <data name="Why_Body" xml:space="preserve">
-        <value>Allerede som helt ung begyndte jeg at lege med en Arduino, samt kode lidt html og Python, da jeg elsker de endeløse muligheder der er med it. Derudover elsker jeg også at tilegne mig nye kompetencer, og her tiltaler it-verdens evige udvikling mig.</value>
+        <value />
+    </data>
+    <data name="MyStory_Header" xml:space="preserve">
+        <value>My Story</value>
+    </data>
+    <data name="MyStory_Body" xml:space="preserve">
+        <value />
     </data>
 </root>

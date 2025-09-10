@@ -1,7 +1,14 @@
-﻿@page "/"
+@page "/"
+@inject NavigationManager Nav
+@rendermode InteractiveServer
 
-<PageTitle>Blog</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+@code {
+    protected override void OnInitialized()
+    {
+        var relative = Nav.ToBaseRelativePath(Nav.Uri);
+        if (string.IsNullOrWhiteSpace(relative))
+        {
+            Nav.NavigateTo("/da/");
+        }
+    }
+}

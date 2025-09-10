@@ -19,5 +19,10 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
-    
+
+    <PropertyGroup>
+        <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+    </PropertyGroup>
+
+
 </Project>

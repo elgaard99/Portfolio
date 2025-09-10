@@ -1,9 +1,11 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Editor.Components;
 using Editor.Components.Account;
 using Editor.Data;
+using Microsoft.AspNetCore.Localization;
 
 namespace Editor;
 
@@ -12,7 +14,14 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        // 1
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+        // 2. Add Razor Pages + Blazor Server
+        builder.Services.AddRazorPages();
+        builder.Services.AddServerSideBlazor();
+        
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
@@ -43,7 +52,16 @@ public class Program
         builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
         var app = builder.Build();
-
+        
+        // 3. Supported cultures
+        var supportedCultures = new[] { "da", "af", "fr" };
+        app.UseRequestLocalization(new RequestLocalizationOptions
+        {
+            DefaultRequestCulture = new RequestCulture("da"),
+            SupportedCultures = supportedCultures.Select(c => new CultureInfo(c)).ToList(),
+            SupportedUICultures = supportedCultures.Select(c => new CultureInfo(c)).ToList()
+        });
+        
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -66,7 +84,9 @@ public class Program
 
         // Add additional endpoints required by the Identity /Account Razor components.
         app.MapAdditionalIdentityEndpoints();
-
+        
+        app.UseRequestLocalization();
+        
         app.Run();
     }
 }
