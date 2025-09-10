@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- 
+    Microsoft ResX Schema 
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The format is based on the ResX schema 
+    documented at https://learn.microsoft.com/ (resx).
+  -->
+
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+    </resheader>
+    <data name="Why.Header" xml:space="preserve">
+        <value />
+        <comment>Explain the reason / motivation.</comment>
+    </data>
+
+    <data name="Privat.Header" xml:space="preserve">
+        <value />
+        <comment>Indicates that the content is private/confidential.</comment>
+    </data>
+    <data name="MyStory.Header" xml:space="preserve">
+        <value />
+    </data>
+    <data name="MyStory.Body" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Privat.Body" xml:space="preserve">
+        <value />
+    </data>
+    <data name="Why.Body" xml:space="preserve">
+        <value />
+    </data>
+</root>
