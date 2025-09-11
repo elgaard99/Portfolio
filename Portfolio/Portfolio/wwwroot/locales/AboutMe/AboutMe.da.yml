@@ -1,1 +1,24 @@
-Welcome: "Hej Verden"
+PageTitle: "Hvem er jeg?"
+
+Header: "Hi I'm Sander"
+Body: "Cykelrytter, rejseentusiast og fremtidig datamatiker!"
+
+MyStory_Header: "Hvem er jeg?"
+MyStory_Body: >
+  Efter at have cyklet hele livet, og været professionel i en årrække i Italien og Frankrig, har jeg nu valgt
+  at rette mit fokus mod software udvikling og it-management. I starten af 2024 startede jeg på den online 
+  datamatiker uddannelse, hvor jeg har opnået kompetencer indefor C#, SQL, HTML, Python, WPF, DevOps, DevSecOps, 
+  netværk, cloud-computing og projektledelse.
+  
+WhyDeveloper_Header: "Hvorfor datamatiker?"
+WhyDeveloper_Body: >
+  Allerede som helt ung begyndte jeg at lege med en Arduino, samt kode lidt html og Python,
+  da jeg elsker de endeløse muligheder der er med it. Derudover elsker jeg også at tilegne 
+  mig nye kompetencer, og her tiltaler it-verdens evige udvikling mig.
+  
+InPrivate_Header: "Privat"
+InPrivate_Body: >
+  Når jeg ikke sidder foran computeren, holder jeg meget af at være aktiv og komme ud i 
+  naturen, om det så er cykling, løb eller at stå på ski. Jeg elsker også at se nye steder 
+  og møde nye kulturer, og jeg prøver derfor at rejse så ofte jeg kan. Men jeg sætter også pris 
+  på at komme ned i gear med en god bog, eller være sammen med mine venner over mad, drinks eller brætspil.

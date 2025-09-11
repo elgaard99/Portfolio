@@ -4,40 +4,68 @@ using YamlDotNet.Serialization.NamingConventions;
 public class YamlLocalizationService
 {
     private Dictionary<string, string> _translations = new();
-    public string this[string key] => GetTranslation(key);
-    
+    public string this[string key] 
+        => _translations.TryGetValue(key, out var value) ? value : key;
+
     private readonly string _webrootPath;
     private readonly string[] _supportedLanguages;
     private string _currentLanguage;
     private string _currentPage;
+    private ILogger<YamlLocalizationService> _logger;
 
-    public YamlLocalizationService(IWebHostEnvironment webHost, string[] supportedLanguages, string defaultLanguage = "en")
+    public event Action? LanguageChanged;
+
+    public YamlLocalizationService(
+        IWebHostEnvironment webHost,
+        ILogger<YamlLocalizationService> logger,
+        string[] supportedLanguages,
+        string defaultLanguage = "en")
     {
         _supportedLanguages = supportedLanguages;
-        _currentLanguage = supportedLanguages.Contains(defaultLanguage) ? defaultLanguage : throw new ArgumentException($"defaultLanguage \"{defaultLanguage}\" is not in supported languages.");
+        _currentLanguage = 
+            supportedLanguages.Contains(defaultLanguage) ? defaultLanguage : throw new ArgumentException
+            (
+                $"defaultLanguage \"{defaultLanguage}\" is not in supported languages."
+            );
         _webrootPath = webHost.WebRootPath;
+        _logger = logger;
     }
-    
+
     public async Task LoadTranslations(string page)
     {
         _currentPage = page;
         
         var path = Path.Combine(_webrootPath, "locales", page, $"{page}.{_currentLanguage}.yml");
+        _logger?.LogInformation($"Loading localizations from {path}");
+        
+        if (!File.Exists(path))
+        {
+            _logger?.LogError($"File {path} does not exist");
+            _translations = new Dictionary<string, string>();
+            LanguageChanged?.Invoke();
+            return;
+        }
+
         var yaml = await File.ReadAllTextAsync(path);
         var deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
         _translations = deserializer.Deserialize<Dictionary<string, string>>(yaml);
-    }
-
-    private string GetTranslation(string key)
-    {
-        return _translations.TryGetValue(key, out var value) ? value : key;
+        foreach (var (key, value) in _translations)
+            _logger?.LogDebug($"Translated {key} to {value}");
+        
+        // 🔹 Fire event after loading
+        LanguageChanged?.Invoke();
     }
 
     public async Task SetLanguage(string language)
     {
-        _currentLanguage = language ?? "en";
+        _currentLanguage = _supportedLanguages.Contains(language) ? language : throw new ArgumentException
+            (
+                $"language \"{language}\" is not supported."
+            );
+        
         await LoadTranslations(_currentPage);
+        LanguageChanged?.Invoke();
     }
 }

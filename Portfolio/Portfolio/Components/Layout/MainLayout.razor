@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Nav
+@inject YamlLocalizationService LocalizationService
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +9,11 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <div class="top-row px-4">
+                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCultureAsync("da"))">Dansk</button>
+                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCultureAsync("en"))">English</button>
+                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCultureAsync("fr"))">Francais</button>
+            </div>
         </div>
 
         <article class="content px-4">
@@ -21,3 +27,11 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code
+{
+    private async Task SwitchCultureAsync(string culture)
+    {
+        await LocalizationService.SetLanguage(culture);
+    }
+}

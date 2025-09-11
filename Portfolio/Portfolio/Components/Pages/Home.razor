@@ -1,29 +1,9 @@
-﻿@page "/"
-@inject YamlLocalizationService Localization
+@page "/"
+@inject NavigationManager Nav
 
-<PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
-
-<p>@Localization["Welcome"]</p>
-
-<button @onclick="SetFrench">American</button>
-<button @onclick="SetDanish">Danish</button>
-@code
-{
-    async Task SetFrench()
+@code {
+    protected override void OnInitialized()
     {
-        await Localization.SetLanguage("en");
-    }
-    
-    async Task SetDanish()
-    {
-        await Localization.SetLanguage("da");
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await Localization.LoadTranslations("Home");
-        await base.OnInitializedAsync();
+        Nav.NavigateTo("/about-me");
     }
 }

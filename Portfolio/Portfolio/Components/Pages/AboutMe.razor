@@ -1,0 +1,32 @@
+﻿@implements IDisposable
+@page "/about-me"
+@inject YamlLocalizationService Localization
+@inject NavigationManager Nav
+
+<PageTitle>@Localization["PageTitle"]</PageTitle>
+<h1>@Localization["PageTitle"]</h1>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        Localization.LanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged()
+    {
+        InvokeAsync(StateHasChanged); // refresh UI
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await Localization.LoadTranslations("AboutMe");
+
+        await base.OnParametersSetAsync();
+    }
+
+    public void Dispose()
+    {
+        Localization.LanguageChanged -= OnLanguageChanged;
+    }
+}

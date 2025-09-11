@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 using Portfolio.Components;
 
 namespace Portfolio;
@@ -8,11 +9,14 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
+        builder.Services.AddBlazorBootstrap();
+        builder.Services.AddLogging();
         
         string[] supportedLanguages = { "en", "da", "fr" };
-        builder.Services.AddSingleton<YamlLocalizationService>(provider => 
+        builder.Services.AddScoped<YamlLocalizationService>(provider => 
             new YamlLocalizationService(
                 webHost: provider.GetRequiredService<IWebHostEnvironment>(),
+                logger: provider.GetRequiredService<ILogger<YamlLocalizationService>>(),
                 supportedLanguages: supportedLanguages,
                 defaultLanguage: "da"
                 ));
@@ -22,7 +26,7 @@ public class Program
             .AddInteractiveServerComponents();
 
         var app = builder.Build();
-
+        
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
@@ -30,9 +34,7 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-
-        app.UseHttpsRedirection();
-
+        
         app.UseAntiforgery();
 
         app.MapStaticAssets();
