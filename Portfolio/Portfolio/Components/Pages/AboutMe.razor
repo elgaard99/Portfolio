@@ -4,7 +4,63 @@
 @inject NavigationManager Nav
 
 <PageTitle>@Localization["PageTitle"]</PageTitle>
-<h1>@Localization["PageTitle"]</h1>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Empty column on the left -->
+        <div class="col-md-2"></div>
+
+        <!-- Main content column -->
+        <div class="col-md-8">
+            <div class="py-5">
+                <!-- Hero Section -->
+                <div class="row align-items-center mb-5">
+                    <!-- Header/Body on the left -->
+                    <div class="col-md-8 text-center text-md-start">
+                        <h1 class="fw-bold fs-3">@Localization["Header"] <span>👋</span></h1>
+                        <p class="lead fs-5">@Localization["Body"]</p>
+                    </div>
+
+                    <!-- Avatar on the right -->
+                    <div class="col-md-2 text-center">
+                        <div class="rounded-circle mx-auto shadow-lg" 
+                             style="width: 250px; height: 250px; overflow: hidden;">
+                            <img src="avatar.jpg" alt="Avatar" class="img-fluid" 
+                                 style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Story Card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body text-center">
+                        <h2 class="card-title mb-4 fw-bold fs-3">@Localization["MyStory_Header"]</h2>
+                        <p class="card-text fs-5">@Localization["MyStory_Body"]</p>
+                    </div>
+                </div>
+
+                <!-- Why Development? Card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body text-center">
+                        <h2 class="card-title mb-4 fw-bold fs-3">@Localization["WhyDeveloper_Header"]</h2>
+                        <p class="card-text fs-5">@Localization["WhyDeveloper_Body"]</p>
+                    </div>
+                </div>
+
+                <!-- Outside of Tech Card -->
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-body text-center">
+                        <h2 class="card-title mb-4 fw-bold fs-3">@Localization["InPrivate_Header"]</h2>
+                        <p class="card-text fs-5">@Localization["InPrivate_Body"]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty column on the right -->
+        <div class="col-md-2"></div>
+    </div>
+</div>
 
 @code {
 
