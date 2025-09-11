@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Reflection;
-using AKSoftware.Localization.MultiLanguages;
 using Portfolio.Components;
 
 namespace Portfolio;
@@ -11,8 +8,14 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
-        builder.Services.AddLanguageContainer(Assembly.GetExecutingAssembly(), CultureInfo.GetCultureInfo("da-DK"));
-        builder.Services.AddKeysAccessorAsSingleton();
+        
+        string[] supportedLanguages = { "en", "da", "fr" };
+        builder.Services.AddSingleton<YamlLocalizationService>(provider => 
+            new YamlLocalizationService(
+                webHost: provider.GetRequiredService<IWebHostEnvironment>(),
+                supportedLanguages: supportedLanguages,
+                defaultLanguage: "da"
+                ));
         
         // Add services to the container.
         builder.Services.AddRazorComponents()

@@ -1,31 +1,29 @@
 ﻿@page "/"
-
-@inject ILanguageContainerService languageContainer
-@inject IKeysAccessor Accessor
+@inject YamlLocalizationService Localization
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-<p>@Accessor.Welcome</p>
+<p>@Localization["Welcome"]</p>
 
 <button @onclick="SetFrench">American</button>
 <button @onclick="SetDanish">Danish</button>
 @code
 {
-    void SetFrench()
+    async Task SetFrench()
     {
-        languageContainer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+        await Localization.SetLanguage("en");
     }
     
-    void SetDanish()
+    async Task SetDanish()
     {
-        languageContainer.SetLanguage(System.Globalization.CultureInfo.GetCultureInfo("da-DK"));
+        await Localization.SetLanguage("da");
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        languageContainer.InitLocalizedComponent(this);
-        base.OnInitialized();
+        await Localization.LoadTranslations("Home");
+        await base.OnInitializedAsync();
     }
 }
