@@ -3,65 +3,79 @@
 
 <PageTitle>@LocalizationService["PageTitle"]</PageTitle>
 
-<div class="container py-5">
-    <h1 class="text-center fw-bold mb-5">@LocalizationService["Header"] 🚀</h1>
 
-    <!-- HTX Section -->
-    <div class="row mb-4">
-        <div class="col-md-8 offset-md-2">
-            <div class="card shadow-sm">
-                <div class="text-center card-header bg-dark-subtle text-dark">
-                    <h3 class="card-title fw-bold fs-3 mb-0">🎓 @LocalizationService["Htx_Header"]</h3>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Empty column on the left -->
+        <div class="col-md-2"></div>
+
+        <!-- Main content column -->
+        <div class="col-md-8">
+            <div class="py-5">
+                <h1 class="text-center fw-bold mb-5">@LocalizationService["Header"] 🚀</h1>
+
+                <!-- HTX Section -->
+                <div class="row mb-4">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="text-center card-header bg-dark-subtle text-dark">
+                                <h3 class="card-title fw-bold fs-3 mb-0">🎓 @LocalizationService["Htx_Header"]</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Htx_TimeSpan"]</p>
+                                <p class="card-text">
+                                    @LocalizationService["Htx_Body"]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Htx_TimeSpan"]</p>
-                    <p class="card-text">
-                        @LocalizationService["Htx_Body"]
-                    </p>
+
+                <!-- Cycling Section -->
+                <div class="row mb-4">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="text-center card-header bg-dark-subtle text-dark">
+                                <h3 class="card-title fw-bold fs-3 mb-0">🚴 @LocalizationService["Cycling_Header"]</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Cycling_TimeSpan"]</p>
+                                <p class="card-text">
+                                    @LocalizationService["Cycling_Body"]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Developer Section -->
+                <div class="row mb-4">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="card shadow-sm">
+                            <div class="text-center card-header bg-dark-subtle text-dark">
+                                <h3 class="card-title fw-bold fs-3 mb-0">👨‍💻 @LocalizationService["Developer_Header"]</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Developer_TimeSpan"]</p>
+                                @foreach (string text in LocalizationService["Developer_Body"].Split("\n"))
+                                {
+                                    <p class="card-text mb-0">@text</p>
+                                }
+
+                                <hr class="my-4"/>
+                                <h4 class="fs-5 fw-bold">@LocalizationService["Helper_Header"]</h4>
+                                <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Helper_TimeSpan"]</p>
+                                <p class="card-text">
+                                    @LocalizationService["Helper_Body"]
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Cycling Section -->
-    <div class="row mb-4">
-        <div class="col-md-8 offset-md-2">
-            <div class="card shadow-sm">
-                <div class="text-center card-header bg-dark-subtle text-dark">
-                    <h3 class="card-title fw-bold fs-3 mb-0">🚴 @LocalizationService["Cycling_Header"]</h3>
-                </div>
-                <div class="card-body">
-                    <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Cycling_TimeSpan"]</p>
-                    <p class="card-text">
-                        @LocalizationService["Cycling_Body"]
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Developer Section -->
-    <div class="row mb-4">
-        <div class="col-md-8 offset-md-2">
-            <div class="card shadow-sm">
-                <div class="text-center card-header bg-dark-subtle text-dark">
-                    <h3 class="card-title fw-bold fs-3 mb-0">👨‍💻 @LocalizationService["Developer_Header"]</h3>
-                </div>
-                <div class="card-body">
-                    <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Developer_TimeSpan"]</p>
-                    @foreach (string text in LocalizationService["Developer_Body"].Split("\n"))
-                    {
-                        <p class="card-text mb-0">@text</p>
-                    }
-
-                    <hr class="my-4"/>
-                    <h4 class="fs-5 fw-bold">@LocalizationService["Helper_Header"]</h4>
-                    <p class="text-custom-gray fs-6 card-text mb-0">@LocalizationService["Helper_TimeSpan"]</p>
-                    <p class="card-text">
-                        @LocalizationService["Helper_Body"]
-                    </p>
-                </div>
-            </div>
+            <!-- Empty column on the right -->
+            <div class="col-md-2"></div>
         </div>
     </div>
 </div>
