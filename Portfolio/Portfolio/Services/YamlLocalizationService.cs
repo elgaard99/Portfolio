@@ -1,9 +1,14 @@
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
+namespace Portfolio.Services;
+
 public class YamlLocalizationService
 {
     private Dictionary<string, string> _translations = new();
+    private Dictionary<string, Dictionary<string, string>> _systemTranslations = new();
+    public Dictionary<string, string> SystemTranslations(string section) => _systemTranslations[section];
+    
     public string this[string key] 
         => _translations.TryGetValue(key, out var value) ? value : key;
 
@@ -58,6 +63,36 @@ public class YamlLocalizationService
         LanguageChanged?.Invoke();
     }
 
+    public async Task LoadSystemTranslations()
+    {
+        var path = Path.Combine(_webrootPath, "locales", $"System.{_currentLanguage}.yml");
+        _logger?.LogInformation($"Loading localizations from {path}");
+        
+        if (!File.Exists(path))
+        {
+            _logger?.LogError($"File {path} does not exist");
+            _translations = new Dictionary<string, string>();
+            LanguageChanged?.Invoke();
+            return;
+        }
+
+        var yaml = await File.ReadAllTextAsync(path);
+        _logger.LogInformation($"Loaded data: {yaml}");
+        
+        var deserializer = new DeserializerBuilder()
+            .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .Build();
+
+        // Deserialize the YAML into a nested dictionary
+        _systemTranslations = deserializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(yaml);
+        foreach (var (key, value) in _systemTranslations)
+            _logger?.LogDebug($"Translated {key} to {value}");
+        
+        
+        // 🔹 Fire event after loading
+        LanguageChanged?.Invoke();
+    }
+
     public async Task SetLanguage(string language)
     {
         _currentLanguage = _supportedLanguages.Contains(language) ? language : throw new ArgumentException
@@ -66,6 +101,7 @@ public class YamlLocalizationService
             );
         
         await LoadTranslations(_currentPage);
+        await LoadSystemTranslations();
         LanguageChanged?.Invoke();
     }
 }

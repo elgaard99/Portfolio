@@ -1,4 +1,7 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@inject YamlLocalizationService LocalizationService
+@inject ILogger<NavigationManager> Logger
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">Portfolio</a>
     </div>
@@ -9,21 +12,61 @@
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> AboutMe
+            <NavLink class="nav-link" href="about-me" Match="NavLinkMatch.All">
+                <span class="bi bi-bi-person-fill-nav-menu" aria-hidden="true"></span> @GetValue("AboutMe")
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link" href="experience" Match="NavLinkMatch.All">
+                <span class="bi bi-bi-bucket-fill-nav-menu" aria-hidden="true"></span> @GetValue("Experience")
             </NavLink>
         </div>
     </nav>
 </div>
+
+@code
+{
+    private Dictionary<string, string> _translations = new();
+
+    private string GetValue(string key)
+    {
+        string value = "";
+        try
+        {
+            value = @_translations[key];
+        }
+        catch (Exception e)
+        {
+            Logger.LogError($"Key: '{key}', was not found in translations");
+        }
+
+        return value;
+    }
+    
+    protected override void OnInitialized()
+    {
+        LocalizationService.LanguageChanged += OnLanguageChanged;
+        Logger.LogDebug("Debug log from NavigationManager");
+        Logger.LogInformation("Information log from NavigationManager");
+    }
+
+    private void OnLanguageChanged()
+    {
+        _translations = LocalizationService.SystemTranslations("NavigationManager");
+        InvokeAsync(StateHasChanged); // refresh UI
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LocalizationService.LoadSystemTranslations();
+        _translations = LocalizationService.SystemTranslations("NavigationManager");
+
+        await base.OnParametersSetAsync();
+    }
+
+    public void Dispose()
+    {
+        LocalizationService.LanguageChanged -= OnLanguageChanged;
+    }
+}

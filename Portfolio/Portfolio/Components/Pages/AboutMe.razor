@@ -1,9 +1,9 @@
 ﻿@implements IDisposable
 @page "/about-me"
-@inject YamlLocalizationService Localization
+@inject YamlLocalizationService LocalizationService
 @inject NavigationManager Nav
 
-<PageTitle>@Localization["PageTitle"]</PageTitle>
+<PageTitle>@LocalizationService["PageTitle"]</PageTitle>
 
 <div class="container-fluid">
     <div class="row">
@@ -17,8 +17,8 @@
                 <div class="row align-items-center mb-5">
                     <!-- Header/Body on the left -->
                     <div class="col-md-8 text-center text-md-start">
-                        <h1 class="fw-bold fs-3">@Localization["Header"] <span>👋</span></h1>
-                        <p class="lead fs-5">@Localization["Body"]</p>
+                        <h1 class="fw-bold fs-3">@LocalizationService["Header"] <span>👋</span></h1>
+                        <p class="lead fs-5">@LocalizationService["Body"]</p>
                     </div>
 
                     <!-- Avatar on the right -->
@@ -34,24 +34,24 @@
                 <!-- My Story Card -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body text-center">
-                        <h2 class="card-title mb-4 fw-bold fs-3">@Localization["MyStory_Header"]</h2>
-                        <p class="card-text fs-5">@Localization["MyStory_Body"]</p>
+                        <h2 class="card-title mb-4 fw-bold fs-3">@LocalizationService["MyStory_Header"]</h2>
+                        <p class="card-text fs-5">@LocalizationService["MyStory_Body"]</p>
                     </div>
                 </div>
 
                 <!-- Why Development? Card -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body text-center">
-                        <h2 class="card-title mb-4 fw-bold fs-3">@Localization["WhyDeveloper_Header"]</h2>
-                        <p class="card-text fs-5">@Localization["WhyDeveloper_Body"]</p>
+                        <h2 class="card-title mb-4 fw-bold fs-3">@LocalizationService["WhyDeveloper_Header"]</h2>
+                        <p class="card-text fs-5">@LocalizationService["WhyDeveloper_Body"]</p>
                     </div>
                 </div>
 
                 <!-- Outside of Tech Card -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body text-center">
-                        <h2 class="card-title mb-4 fw-bold fs-3">@Localization["InPrivate_Header"]</h2>
-                        <p class="card-text fs-5">@Localization["InPrivate_Body"]</p>
+                        <h2 class="card-title mb-4 fw-bold fs-3">@LocalizationService["InPrivate_Header"]</h2>
+                        <p class="card-text fs-5">@LocalizationService["InPrivate_Body"]</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
 
     protected override void OnInitialized()
     {
-        Localization.LanguageChanged += OnLanguageChanged;
+        LocalizationService.LanguageChanged += OnLanguageChanged;
     }
 
     private void OnLanguageChanged()
@@ -76,13 +76,13 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        await Localization.LoadTranslations("AboutMe");
+        await LocalizationService.LoadTranslations("AboutMe");
 
         await base.OnParametersSetAsync();
     }
 
     public void Dispose()
     {
-        Localization.LanguageChanged -= OnLanguageChanged;
+        LocalizationService.LanguageChanged -= OnLanguageChanged;
     }
 }
