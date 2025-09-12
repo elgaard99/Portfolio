@@ -7,8 +7,20 @@ public class YamlLocalizationService
 {
     private Dictionary<string, string> _translations = new();
     private Dictionary<string, Dictionary<string, string>> _systemTranslations = new();
-    public Dictionary<string, string> SystemTranslations(string section) => _systemTranslations[section];
-    
+    public Dictionary<string, string> SystemTranslations(string section)
+    {
+        try
+        {
+            return _systemTranslations[section];
+        }
+        catch (KeyNotFoundException e)
+        {
+            _logger.LogError(e.Message);
+        }
+
+        return new Dictionary<string, string>();
+    }
+
     public string this[string key] 
         => _translations.TryGetValue(key, out var value) ? value : key;
 
