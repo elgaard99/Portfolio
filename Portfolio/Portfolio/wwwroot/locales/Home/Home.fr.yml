@@ -1,0 +1,25 @@
+PageTitle: "Accueil"
+
+Header: "Hi, I'm Sander"
+
+Body: >
+  Professionnel en devenir dans le domaine informatique, avec un large éventail de compétences,
+  allant de la gestion de projets, SQL et C# aux technologies DevOps telles que Kubernetes,
+  Prometheus/Grafana et HashiCorp Vault. Après avoir vécu plusieurs années à l'étranger en tant
+  que cycliste professionnel, j'ai désormais orienté ma passion vers le développement logiciel.
+  
+  Je suis actuellement à la recherche d'un stage où je pourrai mettre mes compétences au service
+  de projets significatifs dans un contexte réel.
+  
+Skills_Body: "Code propre et moderne basé sur C# et une conception cloud-native."
+
+Experience_Body: "Je suis déterminé et travailleur, comme je l'ai été tout au long de ma carrière de cycliste professionnel."
+
+AboutMe_Body: "Je suis un sportif, voyageur et passionné d'informatique, qui s'épanouit en construisant des projets significatifs."
+
+SeeMySkills_Btn: "Voir mes compétences"
+ViewExperience_Btn: "Voir mon expérience"
+AboutMe_Btn: "Apprenez à me connaître"
+DownloadCV_Btn: "Télécharger le CV"
+
+Explore_Btn: "Découvrir"

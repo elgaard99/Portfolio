@@ -1,0 +1,25 @@
+PageTitle: "À propos de moi"
+
+Header: "Bonjour, je suis Sander"
+
+Body: "Cycliste, passionné de voyages et futur informaticien !"
+MyStory_Header: "Qui suis-je ?"
+
+MyStory_Body: >
+  Après avoir fait du vélo toute ma vie et avoir été professionnel pendant plusieurs années en Italie et en France, 
+  j'ai maintenant choisi de me concentrer sur le développement de logiciels et la gestion informatique. Début 2024, 
+  j'ai commencé un programme d'informatique en ligne, où j'ai acquis des compétences en C#, SQL, HTML, WPF, DevOps, 
+  DevSecOps, réseaux, cloud computing et gestion de projet.
+
+WhyDeveloper_Header: "Pourquoi l'informatique ?"
+WhyDeveloper_Body: >
+  Dès mon plus jeune âge, j'ai commencé à jouer avec un Arduino et à coder un peu en HTML et Python,
+  car j'adore les possibilités infinies qu'offre l'informatique. J'aime aussi acquérir de nouvelles 
+  compétences, c'est pourquoi le développement constant du monde informatique me plaît tant.
+
+InPrivate_Header: "Privé"
+InPrivate_Body: >
+  Quand je ne suis pas assise devant mon ordinateur, j'aime être active et sortir dans la nature, que ce soit pour 
+  faire du vélo, courir ou skier. J'aime aussi découvrir de nouveaux endroits et de nouvelles cultures, alors 
+  j'essaie de voyager aussi souvent que possible. Mais j'apprécie également de ralentir le rythme avec un bon
+  livre ou de passer du temps avec mes amis autour d'un repas, d'un verre ou d'un jeu de société.

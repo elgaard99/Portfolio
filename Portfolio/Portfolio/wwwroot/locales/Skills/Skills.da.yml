@@ -1,4 +1,4 @@
-PageTitle: "Skills/Tech Stack"
+PageTitle: "Kompetencer"
 
 Header: "Min Værktøjskasse"
 
@@ -9,7 +9,7 @@ Blazor: ".NET Framework og Bootstrap til webapplikationer."
 UI: "Wireframing,  System Sekvens-diagrammer (SSD)."
 Python: "Basic Selenuim til test af webapps."
 Sql: "Erfaring med MSSQL, PostgreSQL og SQLite."
-Csharp: "Object-Oriented Design."
+Csharp: "Object-Oriented Design (OOD)."
 Redis: "Grundlæggende caching og caching strategier."
 UML: "Arbejde med diverse UML diagrammer."
 Architecture: "GRASP og SOLID-principper, MVC, MVVM, Clean-architecture."
