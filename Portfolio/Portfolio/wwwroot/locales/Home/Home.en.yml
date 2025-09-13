@@ -1,19 +1,22 @@
-PageTitle: "Hjem"
+PageTitle: "Home"
 
 Header: "Hi, I'm Sander"
 Body: >
-  Fremtidig datamatiker med en bred vifte af kompetencer, fra databaser, SQL og C# til devops teknologier som
-  Kubernetes, Prometheus/Grafana og Hashicorp Vault. Efter at have levet som professionel cykelrytter i udlandet i 
-  en årrække, har jeg nu kastet min passion over software udvikling.
+  Aspiring IT professional with a broad range of skills, from project-management, SQL and C# to DevOps technologies such as
+  Kubernetes, Prometheus/Grafana and HashiCorp Vault. After living abroad for several years as a professional cyclist,
+  I have now turned my passion to software development.
   
-  Søger pt. en praktikplads, hvor jeg kan få brugt mine evner på meningsfulde projekter, i en virkelighedsnær situation.
+  Currently seeking an internship where I can apply my skills to meaningful projects in a real-world setting.
 
-Skills_Body: "Clean, morderne kode med udgangspunkt i C#, og cloud-native design."
+Skills_Body: "Clean, modern code based on C# and cloud-native design."
 
-Experience_Body: "Målbevidst og arbejdsom igennem mit virke som cykelrytter."
+Experience_Body: "I am focused and hardworking, as I have been throughout my time as a professional cyclist."
 
-AboutMe_Body: "Sportsudøver, rejsemenneske og computernørd, der trives med at bygge meningsfulde projekter."
+AboutMe_Body: "I am an athlete, traveler, and computer nerd who thrives when building meaningful projects."
 
 SeeMySkills_Btn: "See My Skills"
 ViewExperience_Btn: "View Experience"
+AboutMe_Btn: "Get to know me"
 DownloadCV_Btn: "Download CV"
+
+Explore_Btn: "Explore"

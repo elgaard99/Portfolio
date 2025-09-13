@@ -1,1 +1,24 @@
 PageTitle: "About Me"
+
+Header: "Hi I'm Sander"
+Body: "Cyclist, travel enthusiast, and future computer scientist!"
+
+MyStory_Header: "Who am I?"
+MyStory_Body: >
+  After cycling my entire life and being a professional for a number of years in Italy and France, I have now chosen
+  to focus on software development and IT management. In early 2024, I started an online 
+  computer science program, where I have gained skills in C#, SQL, HTML, WPF, DevOps, DevSecOps, 
+  networking, cloud computing, and project management.
+
+WhyDeveloper_Header: "Why Computer-Science?"
+WhyDeveloper_Body: >
+  Even as a young child, I started playing with an Arduino and coding a little HTML and Python,
+  because I love the endless possibilities that IT offers. I also love learning 
+  new skills, and the constant development of the IT world appeals to me.
+
+InPrivate_Header: "Privat"
+InPrivate_Body: >
+  When I'm not sitting in front of the computer, I love being active and getting out into 
+  nature, whether it's cycling, running, or skiing. I also love seeing new places 
+  and experiencing new cultures, so I try to travel as often as I can. But I also appreciate 
+  slowing down with a good book or spending time with my friends over food, drinks, or board games.

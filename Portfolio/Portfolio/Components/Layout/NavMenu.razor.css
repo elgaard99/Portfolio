@@ -11,6 +11,8 @@
     background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
 }
 
+/*------------------------------------------------------------------------------*/
+
 .navbar-language-selection {
     max-width: fit-content;
     margin-left: auto;
@@ -20,7 +22,7 @@
 
 /* Base button styles */
 .navbar-language-selection .btn {
-    width: 40px;    /* choose a fixed width */
+    width: 64px;    /* choose a fixed width */
     height: 20px;   /* choose a fixed height */
     padding: 0;     /* no padding so flag fills completely */
     border-radius: 0;
@@ -78,14 +80,14 @@
 /* When active – full opacity */
 .navbar-language-selection .btn.active {
     opacity: 1;
-    border-color: #0d6efd; /* highlight selected */
+    border-color: #333333; /* highlight selected */
 }
 
 .navbar-language-selection .btn:hover {
     opacity: 0.75;
 }
 
-
+/*------------------------------------------------------------------------------*/
 
 .navbar-toggler:checked {
     background-color: #333333;
