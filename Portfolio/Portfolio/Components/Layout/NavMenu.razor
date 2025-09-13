@@ -13,19 +13,19 @@
     <nav class="nav flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="about-me" Match="NavLinkMatch.All">
-                <span class="bi bi-bi-person-fill-nav-menu" aria-hidden="true"></span> @GetValue("AboutMe")
+                <span aria-hidden="true"><i class="bi bi-person-fill" style="font-size: 1rem; color: white;"></i></span> @GetValue("AboutMe")
             </NavLink>
         </div>
 
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="experience" Match="NavLinkMatch.All">
-                <span class="bi bi-bi-bucket-fill-nav-menu" aria-hidden="true"></span> @GetValue("Experience")
+                <span aria-hidden="true"><i class="bi bi-briefcase-fill" style="font-size: 1rem; color: white;"></i></span> @GetValue("Experience")
             </NavLink>
         </div>
         
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="skills" Match="NavLinkMatch.All">
-                <span class="" aria-hidden="true"><i class="bi bi-tools" style="font-size: 1rem; color: white;"></i></span> @GetValue("Skills")
+                <span aria-hidden="true"><i class="bi bi-tools" style="font-size: 1rem; color: white;"></i></span> @GetValue("Skills")
             </NavLink>
         </div>
     </nav>
@@ -53,8 +53,6 @@
     protected override void OnInitialized()
     {
         LocalizationService.LanguageChanged += OnLanguageChanged;
-        Logger.LogDebug("Debug log from NavigationManager");
-        Logger.LogInformation("Information log from NavigationManager");
     }
 
     private void OnLanguageChanged()

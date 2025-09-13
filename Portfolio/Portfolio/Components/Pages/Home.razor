@@ -1,9 +1,137 @@
 @page "/"
 @inject NavigationManager Nav
+@inject YamlLocalizationService LocalizationService
+@inject ILogger<Home> Logger
+
+<PageTitle>@LocalizationService["PageTitle"]</PageTitle>
+
+<div class="container py-5">
+    <!-- Profile Card -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <!-- Image Column -->
+                        <div class="col-md-3 text-center mb-4 mb-md-0">
+                            <div class="rounded-circle mx-auto shadow-lg"
+                                 style="width: 200px; height: 200px; overflow: hidden;">
+                                <img src="avatar.jpg" alt="Avatar" class="img-fluid"
+                                     style="width: 100%; height: 100%; object-fit: cover;" />
+                            </div>
+                        </div>
+                        <!-- Text Column -->
+                        <div class="col-md-9">
+                            <h2 class="mb-3">@LocalizationService["Header"] 👋</h2>
+                            <p class="mb-3">
+                                @foreach (string text in LocalizationService["Body"].Split("\n"))
+                                {
+                                    <span class="d-block mb-2">@text</span>
+                                }
+                            </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="/skills" class="btn btn-primary rounded-pill d-flex align-items-center">
+                                    <i class="bi bi-tools me-2"></i> @LocalizationService["SeeMySkills_Btn"]
+                                </a>
+                                <a href="/experience" class="btn btn-primary rounded-pill d-flex align-items-center">
+                                    <i class="bi bi-briefcase me-2"></i> @LocalizationService["ViewExperience_Btn"]
+                                </a>
+                                <a href="/about-me" class="btn btn-primary rounded-pill d-flex align-items-center">
+                                    <i class="bi bi-person me-2"></i> @LocalizationService["AboutMe_Btn"]
+                                </a>
+                                <a href="/cv" class="btn btn-outline-primary rounded-pill d-flex align-items-center">
+                                    <i class="bi bi-file-earmark-arrow-down me-2"></i> @LocalizationService["DownloadCV_Btn"]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cards for Skills, Experience, About Me -->
+    <div class="row g-4">
+        <!-- Skills Card -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <h4 class="d-flex align-items-center mb-3">
+                        <i class="bi bi-tools fs-4 me-2 text-danger"></i> @GetValue("Skills")
+                    </h4>
+                    <p class="mb-4">@LocalizationService["Skills_Body"]</p>
+                    <a href="/skills" class="btn btn-link text-primary p-0">@LocalizationService["Explore_Btn"] →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Card -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <h4 class="d-flex align-items-center mb-3">
+                        <i class="bi bi-briefcase fs-4 me-2 text-success"></i> @GetValue("Experience")
+                    </h4>
+                    <p class="mb-4">@LocalizationService["Experience_Body"]</p>
+                    <a href="/experience" class="btn btn-link text-primary p-0">@LocalizationService["Explore_Btn"] →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Me Card -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <h4 class="d-flex align-items-center mb-3">
+                        <i class="bi bi-person fs-4 me-2 text-warning"></i> @GetValue("AboutMe")
+                    </h4>
+                    <p class="mb-4">@LocalizationService["AboutMe_Body"]</p>
+                    <a href="/about-me" class="btn btn-link text-primary p-0">@LocalizationService["Explore_Btn"] →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private Dictionary<string, string> _translations = new();
+
+    private string GetValue(string key)
+    {
+        string value = "";
+        try
+        {
+            value = @_translations[key];
+        }
+        catch (Exception e)
+        {
+            Logger.LogError($"Key: '{key}', was not found in translations");
+        }
+
+        return value;
+    }
+    
     protected override void OnInitialized()
     {
-        Nav.NavigateTo("/skills");
+        LocalizationService.LanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged()
+    {
+        _translations = LocalizationService.SystemTranslations("NavigationManager");
+        InvokeAsync(StateHasChanged); // refresh UI
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _translations = LocalizationService.SystemTranslations("NavigationManager");
+        
+        await LocalizationService.LoadTranslations("Home");
+        await base.OnParametersSetAsync();
+    }
+
+    public void Dispose()
+    {
+        LocalizationService.LanguageChanged -= OnLanguageChanged;
     }
 }
