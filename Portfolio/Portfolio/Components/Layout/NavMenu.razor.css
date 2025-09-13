@@ -11,13 +11,89 @@
     background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
 }
 
+.navbar-language-selection {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-flex; /* put buttons in one line */
+}
+
+/* Base button styles */
+.navbar-language-selection .btn {
+    width: 40px;    /* choose a fixed width */
+    height: 20px;   /* choose a fixed height */
+    padding: 0;     /* no padding so flag fills completely */
+    border-radius: 0;
+    margin: 0;
+    border-right-width: 0;
+    border-color: #333333;
+    background-size: 100% 100%; /* stretch flag */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Remove Bootstrap press/active/focus effects */
+.navbar-language-selection .btn:active,
+.navbar-language-selection .btn:focus,
+.navbar-language-selection .btn.active:focus {
+    outline: none;                /* no outline */
+    box-shadow: none !important;  /* remove box shadow */
+    background-color: transparent !important; /* prevent bg color flash */
+    border-color: #333333 !important; /* ensure no border */
+}
+
+/* Rounded edges only on outer buttons */
+.navbar-language-selection .btn:first-child {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.navbar-language-selection .btn:last-child {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* Flag images per button */
+.navbar-language-selection .btn.lang-da {
+    background-image: url('danish.png');
+}
+
+.navbar-language-selection .btn.lang-en {
+    background-image: url('english.png');
+}
+
+.navbar-language-selection .btn.lang-fr {
+    background-image: url('french.svg');
+}
+
+/* All flag buttons – default 50% opacity */
+.navbar-language-selection .btn.lang-da,
+.navbar-language-selection .btn.lang-en,
+.navbar-language-selection .btn.lang-fr {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.5; /* semi transparent by default */
+    transition: opacity 0.2s; /* smooth fade */
+}
+
+/* When active – full opacity */
+.navbar-language-selection .btn.active {
+    opacity: 1;
+    border-color: #0d6efd; /* highlight selected */
+}
+
+.navbar-language-selection .btn:hover {
+    opacity: 0.75;
+}
+
+
+
 .navbar-toggler:checked {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: #333333;
 }
 
 .top-row {
     min-height: 3.5rem;
-    background-color: #343a40;
+    background-color: #333333;
 }
 
 .navbar-brand {

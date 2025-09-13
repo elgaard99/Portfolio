@@ -1,5 +1,6 @@
 NavigationManager:
+  Home: "Hjem"
   AboutMe: "Omkring Mig"
   Experience: "Erfaring"
-  Skills: "Skills/Tech Stack"
+  Skills: "Kompetencer"
   

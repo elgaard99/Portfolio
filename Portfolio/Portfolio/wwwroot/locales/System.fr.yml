@@ -1,4 +1,5 @@
 NavigationManager:
+  Home: "Accueil"
   AboutMe: "À propos de moi"
   Experience: "Expérience"
-  Skills: "Compétences / Pile technologique"
+  Skills: "Compétences"

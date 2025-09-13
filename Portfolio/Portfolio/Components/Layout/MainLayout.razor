@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager Nav
 @inject YamlLocalizationService LocalizationService
 
 <div class="page">
@@ -8,14 +7,6 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <div class="top-row px-4">
-                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCultureAsync("da"))">Dansk</button>
-                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCultureAsync("en"))">English</button>
-                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCultureAsync("fr"))">Français</button>
-            </div>
-        </div>
-
         <article class="content px-4">
             @Body
         </article>

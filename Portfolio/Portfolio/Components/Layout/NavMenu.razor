@@ -1,16 +1,18 @@
 ﻿@inject YamlLocalizationService LocalizationService
 @inject ILogger<NavigationManager> Logger
 
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Portfolio</a>
-    </div>
-</div>
+
 
 <input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span aria-hidden="true"><i class="bi bi-house-fill" style="font-size: 1rem; color: white;"></i></span> @GetValue("Home")
+            </NavLink>
+        </div>
+        
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="about-me" Match="NavLinkMatch.All">
                 <span aria-hidden="true"><i class="bi bi-person-fill" style="font-size: 1rem; color: white;"></i></span> @GetValue("AboutMe")
@@ -22,7 +24,7 @@
                 <span aria-hidden="true"><i class="bi bi-briefcase-fill" style="font-size: 1rem; color: white;"></i></span> @GetValue("Experience")
             </NavLink>
         </div>
-        
+
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="skills" Match="NavLinkMatch.All">
                 <span aria-hidden="true"><i class="bi bi-tools" style="font-size: 1rem; color: white;"></i></span> @GetValue("Skills")
@@ -31,10 +33,24 @@
     </nav>
 </div>
 
+<div style="text-align:center;">
+    <div class="navbar-language-selection">
+        <button class="btn btn-sm btn-outline-primary lang-da @(_currentCulture=="da"?"active":"")"
+                @onclick="@(()=>SwitchCultureAsync("da"))"></button>
+
+        <button class="btn btn-sm btn-outline-primary lang-en @(_currentCulture=="en"?"active":"")"
+                @onclick="@(()=>SwitchCultureAsync("en"))"></button>
+
+        <button class="btn btn-sm btn-outline-primary lang-fr @(_currentCulture=="fr"?"active":"")"
+                @onclick="@(()=>SwitchCultureAsync("fr"))"></button>
+    </div>
+</div>
+
 @code
 {
     private Dictionary<string, string> _translations = new();
-
+    private string _currentCulture = "da";
+    
     private string GetValue(string key)
     {
         string value = "";
@@ -48,6 +64,12 @@
         }
 
         return value;
+    }
+    
+    private async Task SwitchCultureAsync(string culture)
+    {
+        _currentCulture = culture;
+        await LocalizationService.SetLanguage(culture);
     }
     
     protected override void OnInitialized()
