@@ -5,6 +5,13 @@
     background-color: #f2f2f2;
 }
 
+.page_blog {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color:  #212529;
+}
+
 main {
     flex: 1;
 }
@@ -50,6 +57,10 @@ main {
 
 @media (min-width: 641px) {
     .page {
+        flex-direction: row;
+    }
+    
+    .page_blog {
         flex-direction: row;
     }
 

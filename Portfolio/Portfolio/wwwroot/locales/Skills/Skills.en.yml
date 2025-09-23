@@ -4,50 +4,73 @@ Header: "My Toolbox"
 
 TechStack_Body: "Here are the different technologies I have acquired and use in my projects."
 
+HtmlLabel: "HTML/CSS & XAML:"
 Html: "WPF framework for desktop applications."
+
+BlazorLabel: "Blazor:"
 Blazor: ".NET Framework and Bootstrap for web applications."
+
+UIUXLabel: "UI/UX:"
 UI: "Wireframing, System Sequence Diagrams (SSD)."
+
+PythonLabel: "Python:"
 Python: "Basic Selenium for testing web apps."
+
+SqlTsqlLabel: "SQL & TSQL:"
 Sql: "Experience with MSSQL, PostgreSQL and SQLite."
+
+CsharpNetLabel: "C# & .NET:"
 Csharp: "Object-oriented design (OOD)."
+
+RedisLabel: "Redis:"
 Redis: "Basic caching and caching strategies."
+
+UMLLabel: "UML:"
 UML: "Work with various UML diagrams."
+
+ArchitectureLabel: "Architecture:"
 Architecture: "GRASP and SOLID principles, MVC, MVVM, Clean Architecture."
+
+VersioningLabel: "Versioning:"
 Versioning: "Git and GitHub for simple branching strategies."
+
+ProjectManagementLabel: "Project management:"
 ProjectManagement: "Kanban board, Scrum board, Gantt chart."
+
+ProccessModelsLabel: "Process models:"
 ProccessModels: "Practical experience with Waterfall, RUP and XP."
+
+CiCdLabel: "CI/CD:"
 CiCd: "GitHub Actions for various workflows and cutover strategies."
+
+ItSecurityLabel: "Security:"
 ItSecurity: "Work with HashiCorp Vault, Zero Trust, RBAC and GDPR."
+
+MonitoringLabel: "Monitoring:"
 Monitoring: "Implementation of logging, auditing and handling with Prometheus and visualization with Grafana."
+
+LinuxLabel: "Linux:"
 Linux: "Server setup, containerization with Docker and LXC, and virtualization."
+
+AzureLabel: "Azure:"
 Azure: "Familiarity with Azure services and provisioning them."
+
+IaCLabel: "IaC:"
 IaC: "Setting up Terraform to manage cloud services."
+
+KubernetesLabel: "Kubernetes:"
 Kubernetes: "Currently specializing in Kubernetes."
+
+CloudSecurityLabel: "Cloud security:"
 CloudSecurity: "My specialization in cloud security starts in October."
+
+Tools_Header: "Tools"
+IDEsLabel: "IDEs:"
 IDEs: "Coding in Visual Studio 2022, Rider and Neovim."
+
+AiLabel: "AI:"
 Ai: "AI for debugging, coding and idea generation."
+
+FedoraWindowsLabel: "Fedora & Windows:"
 FedoraWindows: "Comfortable in both Windows and Linux environments."
 
-HtmlLabel: "HTML/CSS & XAML:"
-BlazorLabel: "Blazor:"
-UIUXLabel: "UI/UX:"
-PythonLabel: "Python:"
-SqlTsqlLabel: "SQL & TSQL:"
-CsharpNetLabel: "C# & .NET:"
-RedisLabel: "Redis:"
-UMLLabel: "UML:"
-ArchitectureLabel: "Architecture:"
-VersioningLabel: "Versioning:"
-ProjectManagementLabel: "Project management:"
-ProccessModelsLabel: "Process models:"
-CiCdLabel: "CI/CD:"
-ItSecurityLabel: "Security:"
-MonitoringLabel: "Monitoring:"
-LinuxLabel: "Linux:"
-AzureLabel: "Azure:"
-IaCLabel: "IaC:"
-KubernetesLabel: "Kubernetes:"
-CloudSecurityLabel: "Cloud security:"
-IDEsLabel: "IDEs:"
-AiLabel: "AI:"
-FedoraWindowsLabel: "Fedora & Windows:"

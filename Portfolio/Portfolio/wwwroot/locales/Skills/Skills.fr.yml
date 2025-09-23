@@ -3,50 +3,73 @@ PageTitle: "Compétences"
 Header: "Ma boîte à outils"
 TechStack_Body: "Voici les différentes technologies que j'ai acquises et que j'utilise dans mes projets."
 
+HtmlLabel: "HTML/CSS & XAML :"
 Html: "WPF Framework pour applications de bureau."
+
+BlazorLabel: "Blazor :"
 Blazor: ".NET Framework et Bootstrap pour applications web."
+
+UIUXLabel: "UI/UX :"
 UI: "Wireframing, diagrammes de séquence système (SSD)."
+
+PythonLabel: "Python :"
 Python: "Selenium de base pour les tests d'applications web."
+
+SqlTsqlLabel: "SQL & TSQL :"
 Sql: "Expérience avec MSSQL, PostgreSQL et SQLite."
+
+CsharpNetLabel: "C# & .NET :"
 Csharp: "Conception orientée objet (OOD)."
+
+RedisLabel: "Redis :"
 Redis: "Mise en cache basique et stratégies de mise en cache."
+
+UMLLabel: "UML :"
 UML: "Travail avec divers diagrammes UML."
+
+ArchitectureLabel: "Architecture :"
 Architecture: "Principes GRASP et SOLID, MVC, MVVM, Clean Architecture."
+
+VersioningLabel: "Gestion des versions :"
 Versioning: "Git et GitHub pour des stratégies de branching simples."
+
+ProjectManagementLabel: "Gestion de projet :"
 ProjectManagement: "Tableau Kanban, tableau Scrum, diagramme de Gantt."
+
+ProccessModelsLabel: "Modèles de processus :"
 ProccessModels: "Expérience pratique des modèles Waterfall, RUP et XP."
+
+CiCdLabel: "CI/CD :"
 CiCd: "GitHub Actions pour divers workflows et stratégies de basculement."
+
+ItSecurityLabel: "Sécurité :"
 ItSecurity: "Travail avec HashiCorp Vault, Zero Trust, RBAC et RGPD."
+
+MonitoringLabel: "Supervision :"
 Monitoring: "Mise en place de logs, d'audit et gestion avec Prometheus, visualisation avec Grafana."
+
+LinuxLabel: "Linux :"
 Linux: "Configuration de serveurs, containerisation avec Docker et LXC, et virtualisation."
+
+AzureLabel: "Azure :"
 Azure: "Connaissance des services Azure et de leur provisionnement."
+
+IaCLabel: "IaC :"
 IaC: "Configuration de Terraform pour gérer les services cloud."
+
+KubernetesLabel: "Kubernetes :"
 Kubernetes: "Spécialisation en cours sur Kubernetes."
+
+CloudSecurityLabel: "Sécurité cloud :"
 CloudSecurity: "Ma spécialisation en sécurité cloud commence en octobre."
+
+Tools_Header: "Outils"
+IDEsLabel: "IDE :"
 IDEs: "Programmation dans Visual Studio 2022, Rider et Neovim."
+
+AiLabel: "IA :"
 Ai: "IA pour le débogage, le codage et la génération d'idées."
+
+FedoraWindowsLabel: "Fedora & Windows :"
 FedoraWindows: "À l'aise dans les environnements Windows et Linux."
 
-HtmlLabel: "HTML/CSS & XAML :"
-BlazorLabel: "Blazor :"
-UIUXLabel: "UI/UX :"
-PythonLabel: "Python :"
-SqlTsqlLabel: "SQL & TSQL :"
-CsharpNetLabel: "C# & .NET :"
-RedisLabel: "Redis :"
-UMLLabel: "UML :"
-ArchitectureLabel: "Architecture :"
-VersioningLabel: "Gestion des versions :"
-ProjectManagementLabel: "Gestion de projet :"
-ProccessModelsLabel: "Modèles de processus :"
-CiCdLabel: "CI/CD :"
-ItSecurityLabel: "Sécurité :"
-MonitoringLabel: "Supervision :"
-LinuxLabel: "Linux :"
-AzureLabel: "Azure :"
-IaCLabel: "IaC :"
-KubernetesLabel: "Kubernetes :"
-CloudSecurityLabel: "Sécurité cloud :"
-IDEsLabel: "IDE :"
-AiLabel: "IA :"
-FedoraWindowsLabel: "Fedora & Windows :"

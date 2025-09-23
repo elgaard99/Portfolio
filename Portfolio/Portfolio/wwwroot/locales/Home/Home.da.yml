@@ -4,9 +4,9 @@ Header: "Hi, I'm Sander"
 Body: >
   Fremtidig datamatiker med en bred vifte af kompetencer, fra projektstyring, SQL og C# til DevOps teknologier som
   Kubernetes, Prometheus/Grafana og Hashicorp Vault. Efter at have levet som professionel cykelrytter i udlandet i 
-  en årrække, har jeg nu kastet min passion over software udvikling.
+  en årrække, har jeg nu rettet mit fokus mod software udvikling.
   
-  Søger pt. en praktikplads, hvor jeg kan få brugt mine evner på meningsfulde projekter, i en virkelighedsnær situation.
+  Søger pt. en praktikplads fra 1. januar og tre måneder frem, hvor jeg kan få brugt mine evner på studierelevante opgaver, i en virkelighedsnær situation.
 
 Skills_Body: "Clean, moderne kode med udgangspunkt i C# og cloud-native design."
 
@@ -14,8 +14,8 @@ Experience_Body: "Målbevidst og arbejdsom igennem mit virke som cykelrytter."
 
 AboutMe_Body: "Sportsudøver, rejsemenneske og computernørd, der trives med at bygge meningsfulde projekter."
   
-SeeMySkills_Btn: "Se mine Kompetencer"
-ViewExperience_Btn: "Min Erfaring"
+SeeMySkills_Btn: "Se mine kompetencer"
+ViewExperience_Btn: "Min erfaring"
 AboutMe_Btn: "Hvem jeg er"
 DownloadCV_Btn: "Download CV"
 
