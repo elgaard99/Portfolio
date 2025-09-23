@@ -1,7 +1,6 @@
 ﻿@implements IDisposable
 @page "/about-me"
 @inject YamlLocalizationService LocalizationService
-@inject NavigationManager Nav
 
 <PageTitle>@LocalizationService["PageTitle"]</PageTitle>
 
@@ -25,7 +24,7 @@
                     <div class="col-md-2 text-center">
                         <div class="rounded-circle mx-auto shadow-lg" 
                              style="width: 250px; height: 250px; overflow: hidden;">
-                            <img src="avatar.jpg" alt="Avatar" class="img-fluid" 
+                            <img src="images/avatar.jpg" alt="Avatar" class="img-fluid" 
                                  style="width: 100%; height: 100%; object-fit: cover;" />
                         </div>
                     </div>

@@ -1,4 +1,5 @@
-﻿@inject YamlLocalizationService LocalizationService
+﻿@using System.Globalization
+@inject YamlLocalizationService LocalizationService
 @inject ILogger<NavigationManager> Logger
 
 
@@ -28,6 +29,12 @@
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="skills" Match="NavLinkMatch.All">
                 <span aria-hidden="true"><i class="bi bi-tools" style="font-size: 1rem; color: white;"></i></span> @GetValue("Skills")
+            </NavLink>
+        </div>
+        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="internship" Match="NavLinkMatch.All">
+                <span aria-hidden="true"><i class="bi bi-info-circle" style="font-size: 1rem; color: white;"></i></span> @GetValue("Internship")
             </NavLink>
         </div>
         

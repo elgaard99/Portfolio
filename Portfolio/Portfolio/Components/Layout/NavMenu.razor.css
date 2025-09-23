@@ -55,15 +55,15 @@
 
 /* Flag images per button */
 .navbar-language-selection .btn.lang-da {
-    background-image: url('danish_flag.png');
+    background-image: url('images/danish_flag.png');
 }
 
 .navbar-language-selection .btn.lang-en {
-    background-image: url('english_flag.png');
+    background-image: url('images/english_flag.png');
 }
 
 .navbar-language-selection .btn.lang-fr {
-    background-image: url('french_flag.svg');
+    background-image: url('images/french_flag.svg');
 }
 
 /* All flag buttons – default 50% opacity */

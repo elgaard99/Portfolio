@@ -16,7 +16,7 @@
                         <div class="col-md-3 text-center mb-4 mb-md-0">
                             <div class="rounded-circle mx-auto shadow-lg"
                                  style="width: 200px; height: 200px; overflow: hidden;">
-                                <img src="avatar.jpg" alt="Avatar" class="img-fluid"
+                                <img src="images/avatar.jpg" alt="Avatar" class="img-fluid"
                                      style="width: 100%; height: 100%; object-fit: cover;" />
                             </div>
                         </div>
@@ -39,8 +39,13 @@
                                 <a href="/about-me" class="btn btn-primary rounded-pill d-flex align-items-center">
                                     <i class="bi bi-person me-2"></i> @LocalizationService["AboutMe_Btn"]
                                 </a>
-                                <a href="/cv" class="btn btn-outline-primary rounded-pill d-flex align-items-center">
-                                    <i class="bi bi-file-earmark-arrow-down me-2"></i> @LocalizationService["DownloadCV_Btn"]
+                                <a
+                                    href="@CvPath()"
+                                    download="Sander_Elgaard_Andersen_CV.pdf"
+                                    class="btn btn-outline-primary rounded-pill d-flex align-items-center"
+                                >
+                                    <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                                    @LocalizationService["DownloadCV_Btn"]
                                 </a>
                             </div>
                         </div>
@@ -95,7 +100,8 @@
 
 @code {
     private Dictionary<string, string> _translations = new();
-
+    private string _currentLanguage;
+    
     private string GetValue(string key)
     {
         string value = "";
@@ -113,11 +119,13 @@
     
     protected override void OnInitialized()
     {
+        _currentLanguage = LocalizationService.CurrentLanguage;
         LocalizationService.LanguageChanged += OnLanguageChanged;
     }
 
     private void OnLanguageChanged()
     {
+        _currentLanguage = LocalizationService.CurrentLanguage;
         _translations = LocalizationService.SystemTranslations("NavigationManager");
         InvokeAsync(StateHasChanged); // refresh UI
     }
@@ -133,5 +141,10 @@
     public void Dispose()
     {
         LocalizationService.LanguageChanged -= OnLanguageChanged;
+    }
+
+    private string CvPath()
+    {
+        return $"/cvs/cv_{_currentLanguage}.pdf";
     }
 }

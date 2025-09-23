@@ -1,0 +1,125 @@
+@implements IDisposable 
+@page "/internship";
+@inject YamlLocalizationService LocalizationService
+
+<PageTitle>@LocalizationService["PageTitle"]</PageTitle>
+
+<div class="container py-5">
+    <!-- Internship Card -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 rounded-4 p-4">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Title -->
+                        <div class="col-12 text-center mb-4">
+                            <h2 class="mb-3 fw-bold">@LocalizationService["Internship_Header"]</h2>
+                        </div>
+                    </div>
+                    <!-- Internship Details -->
+                    <div class="row">
+                        <!-- Left Column: Key Info -->
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h4 class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-calendar fs-4 me-2 text-primary"></i>
+                                    @LocalizationService["Internship_Details"]
+                                </h4>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <strong>@LocalizationService["Internship_When"]</strong>
+                                        @LocalizationService["Internship_When_Value"]
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>@LocalizationService["Internship_Duration"]</strong>
+                                        @LocalizationService["Internship_Duration_Value"]
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>@LocalizationService["Internship_Hours"]</strong>
+                                        @LocalizationService["Internship_Hours_Value"]
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong>@LocalizationService["Internship_Salary"]</strong>
+                                        @LocalizationService["Internship_Salary_Value"]
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Right Column: Description -->
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h4 class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-info-circle fs-4 me-2 text-primary"></i>
+                                    @LocalizationService["Internship_About"]
+                                </h4>
+                                <p class="mb-3">
+                                    @foreach (string text in LocalizationService["Internship_Body"].Split("\n"))
+                                    {
+                                        <span class="d-block mb-2">@text</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Call to Action -->
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <p class="mb-3">
+                                @LocalizationService["Internship_Contact"]
+                            </p>
+                            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                                <a 
+                                    href="@CvPath()"
+                                    download="Sander_Elgaard_Andersen_CV.pdf"
+                                    class="btn btn-primary rounded-pill d-flex align-items-center">
+                                    <i class="bi bi-file-earmark-arrow-down me-2"></i>
+                                    @LocalizationService["DownloadCV_Btn"]
+                                </a>
+                                <a
+                                    href="https://www.linkedin.com/in/sander-elgaard-andersen-0026522b1"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn btn-outline-primary rounded-pill d-flex align-items-center">
+                                    <i class="bi bi-linkedin me-2"></i>
+                                    @LocalizationService["ContactLinkedIn_Btn"]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private string _currentLanguage;
+    protected override void OnInitialized()
+    {
+        LocalizationService.LanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged()
+    {
+        _currentLanguage = LocalizationService.CurrentLanguage;
+        InvokeAsync(StateHasChanged); // refresh UI
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _currentLanguage = LocalizationService.CurrentLanguage;
+        await LocalizationService.LoadTranslations("Internship");
+        await base.OnParametersSetAsync();
+    }
+
+    public void Dispose()
+    {
+        LocalizationService.LanguageChanged -= OnLanguageChanged;
+    }
+    
+    private string CvPath()
+    {
+        return $"/cvs/cv_{_currentLanguage}.pdf";
+    }
+}

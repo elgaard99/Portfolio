@@ -26,7 +26,7 @@ public class YamlLocalizationService
 
     private readonly string _webrootPath;
     private readonly string[] _supportedLanguages;
-    private string _currentLanguage;
+    public string CurrentLanguage { get; private set; }
     private string _currentPage;
     private ILogger<YamlLocalizationService> _logger;
 
@@ -39,7 +39,7 @@ public class YamlLocalizationService
         string defaultLanguage = "en")
     {
         _supportedLanguages = supportedLanguages;
-        _currentLanguage = 
+        CurrentLanguage = 
             supportedLanguages.Contains(defaultLanguage) ? defaultLanguage : throw new ArgumentException
             (
                 $"defaultLanguage \"{defaultLanguage}\" is not in supported languages."
@@ -52,7 +52,7 @@ public class YamlLocalizationService
     {
         _currentPage = page;
         
-        var path = Path.Combine(_webrootPath, "locales", page, $"{page}.{_currentLanguage}.yml");
+        var path = Path.Combine(_webrootPath, "locales", page, $"{page}.{CurrentLanguage}.yml");
         _logger?.LogInformation($"Loading localizations from {path}");
         
         if (!File.Exists(path))
@@ -77,7 +77,7 @@ public class YamlLocalizationService
 
     public async Task LoadSystemTranslations()
     {
-        var path = Path.Combine(_webrootPath, "locales", $"System.{_currentLanguage}.yml");
+        var path = Path.Combine(_webrootPath, "locales", $"System.{CurrentLanguage}.yml");
         _logger?.LogInformation($"Loading localizations from {path}");
         
         if (!File.Exists(path))
@@ -107,7 +107,7 @@ public class YamlLocalizationService
 
     public async Task SetLanguage(string language)
     {
-        _currentLanguage = _supportedLanguages.Contains(language) ? language : throw new ArgumentException
+        CurrentLanguage = _supportedLanguages.Contains(language) ? language : throw new ArgumentException
             (
                 $"language \"{language}\" is not supported."
             );
