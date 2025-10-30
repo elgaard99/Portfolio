@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      portfolio:
+        ipv4_address: 10.2.0.2
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pg-config.json:/pgadmin4/servers.json:ro
+    networks:
+      portfolio:
+        ipv4_address: 10.2.0.3
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER} 
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD} 
+    volumes:
+      - minio_data:/data
+    networks:
+      portfolio:
+        ipv4_address: 10.2.0.4
+    ports:
+      - "9000:9000"  # API port
+      - "9001:9001"  # Console port
+
+volumes:
+  minio_data:
+    name: minio_data
+  pg_data:
+    name: pg_data
+
+networks:
+  portfolio:
+    external: true
+    name: portfolio
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.2.0.0/24

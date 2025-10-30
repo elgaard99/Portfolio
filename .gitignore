@@ -5,7 +5,7 @@
 
 # Kubernetes
 **/kubernetes/**/secrets.yaml
-**/pgadmin/
+**/pg-config.json
 
 # User-specific files
 *.rsuser
