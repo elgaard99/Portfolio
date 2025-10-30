@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Services;
 using Portfolio.Components;
+using SharedLib;
+using SharedLib.Data;
 
 namespace Portfolio;
 
@@ -24,6 +27,13 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+        
+        // Add postgres db
+        var pgConnectionString = builder.Configuration.GetConnectionString("Postgres")
+            ?? throw new NullReferenceException("Postgres");
+        
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(pgConnectionString));
 
         var app = builder.Build();
         
