@@ -1,0 +1,63 @@
+@page "/"
+@using SharedLib
+@using SharedLib.Services
+@using BlazorBootstrap
+@inject IBlogPostService BlogPostService
+
+<h3>Create Blog Post</h3>
+
+<EditForm Model="@newPost" OnValidSubmit="HandleValidSubmit" FormName="NewPostForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputGroup class="mb-3">
+        <InputGroupText>Title</InputGroupText>
+        <InputText @bind-Value="newPost.Title" />
+    </InputGroup>
+
+    <InputGroup class="mb-3">
+        <InputGroupText>Goal</InputGroupText>
+        <InputText @bind-Value="newPost.Goal" />
+    </InputGroup>
+
+    <InputGroup class="mb-3">
+        <InputGroupText>Content</InputGroupText>
+        <InputTextArea @bind-Value="newPost.Content" rows="6" />
+    </InputGroup>
+
+    <InputGroup class="mb-3">
+        <InputGroupText>Publish Date</InputGroupText>
+        <InputDate @bind-Value="newPost.PublishDate" />
+    </InputGroup>
+
+    <Button Color="ButtonColor.Primary" Type="ButtonType.Submit" IsLoading="@isSaving">
+        Save
+    </Button>
+
+    @if (message is not null)
+    {
+        <Alert Color="AlertColor.Success" Class="mt-3">@message</Alert>
+    }
+</EditForm>
+
+@code {
+    private BlogPost newPost = new BlogPost()
+        {
+            Title = "",
+            Goal = "",
+            Content = "",
+            PublishDate = DateTime.UtcNow
+        };
+    private bool isSaving = false;
+    private string? message;
+
+    private async Task HandleValidSubmit()
+    {
+        isSaving = true;
+        message = null;
+        StateHasChanged();
+        var id = await BlogPostService.AddBlogPost(newPost);
+        isSaving = false;
+        message = id > 0 ? "Post saved successfully!" : "Post not saved successfully";
+    }
+}

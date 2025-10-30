@@ -1,39 +1,9 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager Nav
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+@Body
 
-    <main>
-        <div class="top-row px-4">
-            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("da"))">Dansk</button>
-            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("af"))">English</button>
-            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => SwitchCulture("fr"))">Francais</button>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
 </div>
-
-@code {
-    private void SwitchCulture(string culture)
-    {
-        var relativePath = Nav.ToBaseRelativePath(Nav.Uri);
-        var segments = relativePath.Split('/', StringSplitOptions.RemoveEmptyEntries).ToList();
-        if (segments.Count > 0)
-        {
-            segments[0] = culture;
-        }
-        else
-        {
-            segments.Add(culture);
-            segments.Add("/");
-        }
-        var newUri = "/" + string.Join('/', segments);
-        Nav.NavigateTo(newUri, forceLoad: true);
-    }
-}
