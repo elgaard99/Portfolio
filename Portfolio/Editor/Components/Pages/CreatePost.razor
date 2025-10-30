@@ -56,7 +56,7 @@
         isSaving = true;
         message = null;
         StateHasChanged();
-        var id = await BlogPostService.AddBlogPost(newPost);
+        var id = await BlogPostService.AddBlogPostAsync(newPost);
         isSaving = false;
         message = id > 0 ? "Post saved successfully!" : "Post not saved successfully";
     }

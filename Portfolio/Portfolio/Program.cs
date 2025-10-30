@@ -3,6 +3,7 @@ using Portfolio.Services;
 using Portfolio.Components;
 using SharedLib;
 using SharedLib.Data;
+using SharedLib.Services;
 
 namespace Portfolio;
 
@@ -34,6 +35,9 @@ public class Program
         
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(pgConnectionString));
+        
+        // Add services
+        builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 
         var app = builder.Build();
         

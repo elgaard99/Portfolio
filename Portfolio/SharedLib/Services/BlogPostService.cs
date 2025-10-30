@@ -12,14 +12,14 @@ public class BlogPostService : IBlogPostService
         _context = context;
     }
 
-    public async Task<int> AddBlogPost(BlogPost blogPost)
+    public async Task<int> AddBlogPostAsync(BlogPost blogPost)
     {
         _context.BlogPosts.Add(blogPost);
         await _context.SaveChangesAsync();
         return blogPost.Id;
     }
 
-    public async Task UpdateBlogPost(BlogPost blogPost)
+    public async Task UpdateBlogPostAsync(BlogPost blogPost)
     {
         // Optional: check if entity exists
         var existing = await _context.BlogPosts.FindAsync(blogPost.Id);
@@ -34,7 +34,7 @@ public class BlogPostService : IBlogPostService
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteBlogPost(BlogPost blogPost)
+    public async Task DeleteBlogPostAsync(BlogPost blogPost)
     {
         var existing = await _context.BlogPosts.FindAsync(blogPost.Id);
         if (existing is null)
@@ -44,7 +44,7 @@ public class BlogPostService : IBlogPostService
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<BlogPost>> GetBlogPosts()
+    public async Task<List<BlogPost>> GetBlogPostsAsync()
     {
         return await _context.BlogPosts
             .OrderByDescending(b => b.PublishDate)
