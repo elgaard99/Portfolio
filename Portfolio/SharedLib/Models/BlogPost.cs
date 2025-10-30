@@ -6,14 +6,11 @@ public class BlogPost
     public string Title { get; set; }
     public string Goal { get; set; }
     public string Content { get; set; }
-    public DateTime PublishDate { get; set; }
 
-    // public BlogPost(int id, string title, string goal, string content, DateTime publishDate)
-    // {
-    //     Id = id;
-    //     Title = title;
-    //     Goal = goal;
-    //     Content = content;
-    //     PublishDate = publishDate;
-    // }
+    private DateTime _publishDate;
+    public DateTime PublishDate
+    {
+        get => _publishDate;
+        set => _publishDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
+    }
 }

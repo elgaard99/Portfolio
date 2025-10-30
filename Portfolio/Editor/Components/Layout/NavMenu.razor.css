@@ -1,0 +1,158 @@
+.navbar-toggler {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
+}
+
+/*------------------------------------------------------------------------------*/
+
+.navbar-language-selection {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-flex; /* put buttons in one line */
+}
+
+/* Base button styles */
+.navbar-language-selection .btn {
+    width: 64px;    /* choose a fixed width */
+    height: 20px;   /* choose a fixed height */
+    padding: 0;     /* no padding so flag fills completely */
+    border-radius: 0;
+    margin: 0;
+    border-right-width: 0;
+    border-color: #333333;
+    background-size: 100% 100%; /* stretch flag */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Remove Bootstrap press/active/focus effects */
+.navbar-language-selection .btn:active,
+.navbar-language-selection .btn:focus,
+.navbar-language-selection .btn.active:focus {
+    outline: none;                /* no outline */
+    box-shadow: none !important;  /* remove box shadow */
+    background-color: transparent !important; /* prevent bg color flash */
+    border-color: #333333 !important; /* ensure no border */
+}
+
+/* Rounded edges only on outer buttons */
+.navbar-language-selection .btn:first-child {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.navbar-language-selection .btn:last-child {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+/* All flag buttons – default 50% opacity */
+.navbar-language-selection .btn.lang-da,
+.navbar-language-selection .btn.lang-en,
+.navbar-language-selection .btn.lang-fr {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.5; /* semi transparent by default */
+    transition: opacity 0.2s; /* smooth fade */
+}
+
+/* When active – full opacity */
+.navbar-language-selection .btn.active {
+    opacity: 1;
+    border-color: #333333; /* highlight selected */
+}
+
+.navbar-language-selection .btn:hover {
+    opacity: 0.75;
+}
+
+/*------------------------------------------------------------------------------*/
+
+.navbar-toggler:checked {
+    background-color: #333333;
+}
+
+.top-row {
+    min-height: 3.5rem;
+    background-color: #333333;
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+.bi {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    top: -1px;
+    background-size: cover;
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item ::deep .nav-link {
+        color: #d7d7d7;
+        background: none;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+    }
+
+.nav-item ::deep a.active {
+    background-color: rgba(255,255,255,0.37);
+    color: white;
+}
+
+.nav-item ::deep .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.nav-scrollable {
+    display: none;
+}
+
+.navbar-toggler:checked ~ .nav-scrollable {
+    display: block;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .nav-scrollable {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+
+        /* Allow sidebar to scroll for tall menus */
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}

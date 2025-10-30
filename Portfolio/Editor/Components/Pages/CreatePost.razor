@@ -1,5 +1,4 @@
-@page "/"
-@using SharedLib
+@page "/create-post"
 @using SharedLib.Services
 @using BlazorBootstrap
 @inject IBlogPostService BlogPostService
@@ -59,5 +58,13 @@
         var id = await BlogPostService.AddBlogPostAsync(newPost);
         isSaving = false;
         message = id > 0 ? "Post saved successfully!" : "Post not saved successfully";
+
+        newPost = new BlogPost()
+            {
+                Title = "",
+                Goal = "",
+                Content = "",
+                PublishDate = DateTime.UtcNow
+            };
     }
 }

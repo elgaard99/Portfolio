@@ -1,0 +1,106 @@
+@page "/blog"
+@using SharedLib.Services
+@inject IBlogPostService BlogPostService
+
+<PageTitle>Blog</PageTitle>
+
+@if (isLoading)
+{
+    <div class="text-center my-5">
+        <BBSpinner Color="SpinnerColor.Primary" Size="SpinnerSize.Medium" />
+        <p class="mt-2">Loading posts...</p>
+    </div>
+}
+else
+{
+    
+    <div class="container mt-5 bg-dark text-light p-4 rounded">
+        <header class="mb-5 text-center">
+            <h1 class="display-4 fw-bold">Portefølje for 4. semester</h1>
+            <p class="lead text-secondary mb-0">Dette er en blog til at følge min udvikling indenfor IT-sikkerhed og DevOps</p>
+            <p class="lead text-secondary mb-0">This is a blog to follow my journey in IT security and DevOps.</p>
+            <p class="lead text-secondary">Ce blog retrace mon évolution dans le domaine de la sécurité informatique et du DevOps.</p>
+        </header>
+
+        <div class="row">
+            <!-- Blog list -->
+            <div class="col-md-4">
+                <div class="list-group">
+                    @foreach (var post in blogPosts.OrderByDescending(p => p.PublishDate))
+                    {
+                        var isActive = selectedPost?.Id == post.Id;
+                        <button class="list-group-item list-group-item-action 
+                                       @(isActive ? "active bg-primary text-white border-primary" : "bg-secondary text-light border-secondary")"
+                                @onclick="() => SelectPost(post)">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1 fw-bold">@post.Title</h5>
+                                <small>@post.PublishDate.ToString("MMM dd, yyyy")</small>
+                            </div>
+                            <p>Mål: @post.Goal</p>
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Selected blog content -->
+            <div class="col-md-8">
+                @if (selectedPost is not null)
+                {
+                    <div class="card bg-secondary text-light shadow-sm border-primary">
+                        <div class="card-body">
+                            <h2 class="card-title">@selectedPost.Title</h2>
+                            <p class="text-muted">@selectedPost.PublishDate.ToString("MMMM dd, yyyy"), Mål: @selectedPost.Goal</p>
+                            <p class="card-text">@selectedPost.Content</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top border-primary d-flex justify-content-end">
+                            <button class="btn btn-outline-danger btn-sm px-3"
+                                    title="Delete this post"
+                                    @onclick="DeletePost">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="card bg-secondary text-light border-secondary">
+                        <div class="card-body text-muted">
+                            Vælg et indlæg fra listen for at se det her.
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    BlogPost? selectedPost;
+    List<BlogPost> blogPosts;
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+
+        blogPosts = await BlogPostService.GetBlogPostsAsync();
+
+        selectedPost = blogPosts?
+            .OrderByDescending(p => p.PublishDate)
+            .FirstOrDefault();
+
+        isLoading = false;
+    }
+    
+    void SelectPost(BlogPost post)
+    {
+        selectedPost = post;
+    }
+
+    async Task DeletePost()
+    {
+        await BlogPostService.DeleteBlogPostAsync(selectedPost);
+        blogPosts.Remove(selectedPost);
+        selectedPost = blogPosts.FirstOrDefault();
+    }
+}
