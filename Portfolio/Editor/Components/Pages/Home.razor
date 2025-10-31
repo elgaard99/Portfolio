@@ -1,9 +1,99 @@
 @page "/"
 @inject NavigationManager Nav
 
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@inject ILogger<Home> Logger
+@inject IWebHostEnvironment Environment
+
+
+<h1>File Upload Example 1</h1>
+
+<p>
+    <label>
+        Max file size:
+        <input type="number" @bind="maxFileSize" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Max allowed files:
+        <input type="number" @bind="maxAllowedFiles" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="LoadFiles" multiple />
+    </label>
+</p>
+
+@if (isLoading)
+{
+    <p>Uploading...</p>
+}
+else
+{
+    <div class="home">
+        <ul>
+            @foreach (var file in loadedFiles)
+            {
+                <li class="">
+                    <ul>
+                        <li>Name: @file.Name</li>
+                        <li>Last modified: @file.LastModified.ToString()</li>
+                        <li>Size (bytes): @file.Size</li>
+                        <li>Content type: @file.ContentType</li>
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
 @code {
-    protected override void OnInitialized()
+    private List<IBrowserFile> loadedFiles = [];
+    private long maxFileSize = 1024 * 1080;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
     {
-        Nav.NavigateTo("/blog", forceLoad: true);
+        isLoading = true;
+        loadedFiles.Clear();
+
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                var trustedFileName = Path.GetRandomFileName();
+                var path = Path.Combine(Environment.ContentRootPath,
+                    Environment.EnvironmentName, "unsafe_uploads",
+                    trustedFileName);
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+                loadedFiles.Add(file);
+
+                Logger.LogInformation(
+                    "Unsafe Filename: {UnsafeFilename} File saved: {Filename}",
+                    file.Name, trustedFileName);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {Filename} Error: {Error}", 
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
     }
+
+    // protected override void OnInitialized()
+    // {
+    //     Nav.NavigateTo("/blog", forceLoad: true);
+    // }
 }

@@ -5,8 +5,11 @@ using SharedLib.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Bootstrap
 builder.Services.AddBlazorBootstrap();
 
+// Add Logging
+builder.Services.AddLogging();
 
 // Add postgres db
 var pgConnectionString = builder.Configuration.GetConnectionString("Postgres")
@@ -20,6 +23,15 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+
+// Add MinIO
+builder.Services.AddScoped<MinioService>(provider =>
+    new MinioService(
+        endpoint: builder.Configuration["MinIo:Endpoint"],
+        accessKey: builder.Configuration["MinIo:AccessKey"],
+        secretKey: builder.Configuration["MinIo:SecretKey"]
+    )
+);
 
 var app = builder.Build();
 
