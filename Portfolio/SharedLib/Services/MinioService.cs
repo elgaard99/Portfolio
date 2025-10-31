@@ -18,17 +18,6 @@ public class MinioService
             .Build();
     }
 
-    public async Task InitializeBucket(string bucketName)
-    {
-        var beArgs = new BucketExistsArgs().WithBucket(bucketName);
-        bool found = await _minioClient.BucketExistsAsync(beArgs);
-        if (!found)
-        {
-            var mbArgs = new MakeBucketArgs().WithBucket(bucketName);
-            await _minioClient.MakeBucketAsync(mbArgs);
-        }
-    }
-
     public async Task UploadPhoto(string bucketName, Stream fileStream, string fileName)
     {
         var beArgs = new BucketExistsArgs().WithBucket(bucketName);
@@ -46,5 +35,15 @@ public class MinioService
             .WithObjectSize(fileStream.Length);
 
         await _minioClient.PutObjectAsync(putObjectArgs);
+    }
+    
+    public async Task<string> GetPhotoUrlAsync(string bucketName, string fileName, int expiryInSeconds = 3600)
+    {
+        var args = new PresignedGetObjectArgs()
+            .WithBucket(bucketName)
+            .WithObject(fileName)
+            .WithExpiry(expiryInSeconds);
+
+        return await _minioClient.PresignedGetObjectAsync(args);
     }
 }

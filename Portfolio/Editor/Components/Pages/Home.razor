@@ -49,6 +49,15 @@
     }
 </div>
 
+
+@if (!string.IsNullOrEmpty(photoUrl))
+{
+    <div class="mt-3">
+        <h5>Uploaded image:</h5>
+        <img src="@photoUrl" class="img-thumbnail" style="max-height: 300px;" />
+    </div>
+}
+
 @if (message != null)
 {
     <Alert Color="AlertColor.Success" Class="mt-3">@message</Alert>
@@ -59,6 +68,7 @@
     private string? imagePreview;
     private bool isUploading = false;
     private string? message;
+    private string? photoUrl;
     
     [SupplyParameterFromForm(FormName = "UploadPhoto")]
     Photo newPhoto { get; set; } = new Photo();
@@ -91,7 +101,7 @@
 
             // Optionally, display confirmation or preview
             Logger.LogInformation($"Uploaded '{file.Name}' successfully, to bucket {bucketName}!");
-            imagePreview = await GetImagePreview(file);
+            photoUrl = await MinioService.GetPhotoUrlAsync(bucketName, file.Name);
         }
         catch (Exception ex)
         {
