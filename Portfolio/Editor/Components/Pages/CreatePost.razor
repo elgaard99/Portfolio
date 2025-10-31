@@ -1,5 +1,6 @@
 @page "/create-post"
 @inject IBlogPostService BlogPostService
+@rendermode InteractiveServer
 
 <h3>Create Blog Post</h3>
 
@@ -36,6 +37,8 @@
         <Alert Color="AlertColor.Success" Class="mt-3">@message</Alert>
     }
 </EditForm>
+
+<UploadImage></UploadImage>
 
 @code {
     private BlogPost newPost = new BlogPost()

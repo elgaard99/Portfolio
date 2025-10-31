@@ -1,17 +1,18 @@
+using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
-using Minio.Exceptions;
-using System.IO;
-using System.Threading.Tasks;
+
 
 namespace SharedLib.Services;
 
 public class MinioService
 {
     private readonly IMinioClient _minioClient;
+    private readonly ILogger<MinioService> _logger;
 
-    public MinioService(string endpoint, string accessKey, string secretKey)
+    public MinioService(ILogger<MinioService> logger, string endpoint, string accessKey, string secretKey)
     {
+        _logger = logger;
         _minioClient = new MinioClient()
             .WithEndpoint(endpoint)
             .WithCredentials(accessKey, secretKey)
@@ -45,5 +46,15 @@ public class MinioService
             .WithExpiry(expiryInSeconds);
 
         return await _minioClient.PresignedGetObjectAsync(args);
+    }
+    
+    public async Task DeletePhoto(string bucketName, string objectName)
+    {
+        _logger.LogInformation($"Deleting {objectName}, from {bucketName}.");
+        var removeObjectArgs = new RemoveObjectArgs()
+            .WithBucket(bucketName)
+            .WithObject(objectName);
+
+        await _minioClient.RemoveObjectAsync(removeObjectArgs);
     }
 }
