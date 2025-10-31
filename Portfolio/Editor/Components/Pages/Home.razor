@@ -1,95 +1,111 @@
 @page "/"
 @inject NavigationManager Nav
 
-@using System.IO
-@using Microsoft.AspNetCore.Hosting
 @inject ILogger<Home> Logger
-@inject IWebHostEnvironment Environment
+@inject MinioService MinioService
 
+<h3>Upload Photo</h3>
 
-<h1>File Upload Example 1</h1>
+<div class="row">
+    <div class="col-md-8">
+        <EditForm method="post" Model="newPhoto" OnValidSubmit="SubmitPhoto" FormName="UploadPhoto" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="fileInput" class="form-label">Select Photo</label>
+                <InputFile id="fileInput" accept=".jpg,.jpeg,.png" OnChange="HandleImageChange" />
+            </div>
 
-<p>
-    <label>
-        Max file size:
-        <input type="number" @bind="maxFileSize" />
-    </label>
-</p>
-
-<p>
-    <label>
-        Max allowed files:
-        <input type="number" @bind="maxAllowedFiles" />
-    </label>
-</p>
-
-<p>
-    <label>
-        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
-        <InputFile OnChange="LoadFiles" multiple />
-    </label>
-</p>
-
-@if (isLoading)
-{
-    <p>Uploading...</p>
-}
-else
-{
-    <div class="home">
-        <ul>
-            @foreach (var file in loadedFiles)
-            {
-                <li class="">
-                    <ul>
-                        <li>Name: @file.Name</li>
-                        <li>Last modified: @file.LastModified.ToString()</li>
-                        <li>Size (bytes): @file.Size</li>
-                        <li>Content type: @file.ContentType</li>
-                    </ul>
-                </li>
-            }
-        </ul>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <InputText id="description" class="form-control" @bind-Value="newPhoto.Name" />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Photo</button>
+        </EditForm>
     </div>
+</div>
+<div class="row">
+    <div class="col">
+        @if (message != null)
+        {
+            <p>@message</p>
+        }
+    </div>
+    <div class="col">
+        @if (newPhoto.Name != null)
+        {
+            <p>@newPhoto.Name</p>
+        }
+        else
+        {
+            <p>No photo selected.</p>
+        }
+    </div>
+</div>
+<div class="row">
+    @if (!string.IsNullOrEmpty(imagePreview))
+    {
+        <img src="@imagePreview" alt="Image Preview" style="max-width: 100%; max-height: 400px;"/>
+    }
+</div>
+
+@if (message != null)
+{
+    <Alert Color="AlertColor.Success" Class="mt-3">@message</Alert>
 }
 
 @code {
-    private List<IBrowserFile> loadedFiles = [];
-    private long maxFileSize = 1024 * 1080;
-    private int maxAllowedFiles = 3;
-    private bool isLoading;
-
-    private async Task LoadFiles(InputFileChangeEventArgs e)
+    private IBrowserFile? selectedFile;
+    private string? imagePreview;
+    private bool isUploading = false;
+    private string? message;
+    
+    [SupplyParameterFromForm(FormName = "UploadPhoto")]
+    Photo newPhoto { get; set; } = new Photo();
+    
+    [Parameter]
+    public EventCallback<Photo> OnValidSubmit { get; set; }
+    
+    private async Task SubmitPhoto()
     {
-        isLoading = true;
-        loadedFiles.Clear();
+        await OnValidSubmit.InvokeAsync(newPhoto);
+        message = "Photo added successfully!";
+    }
+    
+    private async Task HandleImageChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file is null)
+            return;
 
-        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        try
         {
-            try
-            {
-                var trustedFileName = Path.GetRandomFileName();
-                var path = Path.Combine(Environment.ContentRootPath,
-                    Environment.EnvironmentName, "unsafe_uploads",
-                    trustedFileName);
+            // Optional: limit max upload size to 10MB
+            await using var stream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
 
-                await using FileStream fs = new(path, FileMode.Create);
-                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+            // Define your bucket (adjust as needed)
+            var bucketName = "photos";
 
-                loadedFiles.Add(file);
+            // Upload the file immediately
+            await MinioService.UploadPhoto(bucketName, stream, file.Name);
 
-                Logger.LogInformation(
-                    "Unsafe Filename: {UnsafeFilename} File saved: {Filename}",
-                    file.Name, trustedFileName);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("File: {Filename} Error: {Error}", 
-                    file.Name, ex.Message);
-            }
+            // Optionally, display confirmation or preview
+            Logger.LogInformation($"Uploaded '{file.Name}' successfully, to bucket {bucketName}!");
+            imagePreview = await GetImagePreview(file);
         }
-
-        isLoading = false;
+        catch (Exception ex)
+        {
+            Logger.LogError($"Upload failed: {ex.Message}");
+        }
+        finally
+        {
+            StateHasChanged();
+        }
+    }
+    
+    private async Task<string> GetImagePreview(IBrowserFile file)
+    {
+        return file.Name;
     }
 
     // protected override void OnInitialized()

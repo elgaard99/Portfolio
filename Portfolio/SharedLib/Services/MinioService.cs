@@ -9,7 +9,6 @@ namespace SharedLib.Services;
 public class MinioService
 {
     private readonly IMinioClient _minioClient;
-    private readonly string _bucketName = "photos"; // Your bucket name
 
     public MinioService(string endpoint, string accessKey, string secretKey)
     {
@@ -19,25 +18,32 @@ public class MinioService
             .Build();
     }
 
-    public async Task InitializeBucket()
+    public async Task InitializeBucket(string bucketName)
     {
-        var beArgs = new BucketExistsArgs().WithBucket(_bucketName);
+        var beArgs = new BucketExistsArgs().WithBucket(bucketName);
         bool found = await _minioClient.BucketExistsAsync(beArgs);
         if (!found)
         {
-            var mbArgs = new MakeBucketArgs().WithBucket(_bucketName);
+            var mbArgs = new MakeBucketArgs().WithBucket(bucketName);
             await _minioClient.MakeBucketAsync(mbArgs);
         }
     }
 
-    public async Task UploadPhoto(Stream fileStream, string fileName)
+    public async Task UploadPhoto(string bucketName, Stream fileStream, string fileName)
     {
+        var beArgs = new BucketExistsArgs().WithBucket(bucketName);
+        bool found = await _minioClient.BucketExistsAsync(beArgs);
+        if (!found)
+        {
+            var mbArgs = new MakeBucketArgs().WithBucket(bucketName);
+            await _minioClient.MakeBucketAsync(mbArgs);
+        }
+        
         var putObjectArgs = new PutObjectArgs()
-            .WithBucket(_bucketName)
+            .WithBucket(bucketName)
             .WithObject(fileName)
             .WithStreamData(fileStream)
-            .WithObjectSize(fileStream.Length)
-            .WithContentType("image/jpeg"); // Adjust as needed
+            .WithObjectSize(fileStream.Length);
 
         await _minioClient.PutObjectAsync(putObjectArgs);
     }
