@@ -77,6 +77,9 @@ else
         isLoading = true;
 
         blogPosts = await BlogPostService.GetBlogPostsAsync();
+        blogPosts = blogPosts?
+            .Where(p => p.IsVisible)
+            .ToList();
 
         selectedPost = blogPosts?
             .OrderByDescending(p => p.PublishDate)

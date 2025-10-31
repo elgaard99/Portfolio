@@ -1,0 +1,35 @@
+@page "/blog"
+@inject IBlogPostService BlogPostService
+
+<PageTitle>Blog</PageTitle>
+
+@if (isLoading)
+{
+    <div class="text-center my-5">
+        <BBSpinner Color="SpinnerColor.Primary" Size="SpinnerSize.Medium" />
+        <p class="mt-2">Loading posts...</p>
+    </div>
+}
+else
+{
+    <DisplayPosts SelectedPost="@selectedPost" BlogPosts="@blogPosts"></DisplayPosts>
+}
+
+@code {
+    BlogPost? selectedPost;
+    List<BlogPost> blogPosts;
+    bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+
+        blogPosts = await BlogPostService.GetBlogPostsAsync();
+
+        selectedPost = blogPosts?
+            .OrderByDescending(p => p.PublishDate)
+            .FirstOrDefault();
+
+        isLoading = false;
+    }
+}

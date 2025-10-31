@@ -13,4 +13,8 @@ public class BlogPost
         get => _publishDate;
         set => _publishDate = DateTime.SpecifyKind(value, DateTimeKind.Utc);
     }
+    
+    public bool IsVisible { get; set; }
+
+    public List<Photo> Photos { get; set; } = new();
 }

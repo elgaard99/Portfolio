@@ -30,6 +30,7 @@ public class BlogPostService : IBlogPostService
         existing.Goal = blogPost.Goal;
         existing.Content = blogPost.Content;
         existing.PublishDate = blogPost.PublishDate;
+        existing.IsVisible = blogPost.IsVisible;
 
         await _context.SaveChangesAsync();
     }

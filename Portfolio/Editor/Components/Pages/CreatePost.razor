@@ -1,6 +1,5 @@
 @page "/create-post"
 @inject IBlogPostService BlogPostService
-@rendermode InteractiveServer
 
 <h3>Create Blog Post</h3>
 
@@ -26,6 +25,11 @@
     <InputGroup class="mb-3">
         <InputGroupText>Publish Date</InputGroupText>
         <InputDate @bind-Value="newPost.PublishDate" />
+    </InputGroup>
+    
+    <InputGroup class="mb-3">
+        <InputGroupText>Is Visible</InputGroupText>
+        <CheckboxInput @bind-Value="newPost.IsVisible" />
     </InputGroup>
 
     <Button Color="ButtonColor.Primary" Type="ButtonType.Submit" IsLoading="@isSaving">
