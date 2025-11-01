@@ -1,11 +1,10 @@
 @inject IBlogPostService BlogPostService
+@inject IPhotoService PhotoService
+@inject MinioService MinioService
 
 <div class="container mt-5 bg-dark text-light p-4 rounded">
     <header class="mb-5 text-center">
         <h1 class="display-4 fw-bold">Portefølje for 4. semester</h1>
-        <p class="lead text-secondary mb-0">Dette er en blog til at følge min udvikling indenfor IT-sikkerhed og DevOps</p>
-        <p class="lead text-secondary mb-0">This is a blog to follow my journey in IT security and DevOps.</p>
-        <p class="lead text-secondary">Ce blog retrace mon évolution dans le domaine de la sécurité informatique et du DevOps.</p>
     </header>
 
     <div class="row">
@@ -30,40 +29,20 @@
 
         <!-- Selected blog content -->
         <div class="col-md-8">
-            @if (SelectedPost is not null)
+            @if (SelectedPost != null)
             {
                 <div class="card bg-secondary text-light shadow-sm border-primary">
                     <div class="card-body">
                         @if (!editing)
                         {
-                            <h2 class="card-title">@SelectedPost.Title</h2>
-                            <p class="text-muted">
-                                @SelectedPost.PublishDate.ToString("MMMM dd, yyyy"),
-                                Mål: @SelectedPost.Goal
-                            </p>
-                            <p class="card-text">@SelectedPost.Content</p>
-                            <p class="card-text">Is Visible: @SelectedPost.IsVisible</p>
+                            <DisplaySelectedPost SelectedPost="@SelectedPost"/>
                         }
                         else
                         {
-                            <div class="mb-3">
-                                <InputText class="form-control form-control-lg fw-bold bg-transparent text-light border-0 border-bottom border-primary"
-                                           @bind-Value="updatedPost.Title"/>
-                            </div>
-
-                            <div class="d-flex align-items-center gap-2 mb-3 text-muted">
-                                <InputDate class="form-control form-control-sm bg-transparent text-light border-0 border-bottom border-secondary"
-                                           @bind-Value="updatedPost.PublishDate" />
-                                <span>Mål:</span>
-                                <InputText class="form-control form-control-sm bg-transparent text-light border-0 border-bottom border-secondary w-50"
-                                           @bind-Value="updatedPost.Goal"/>
-                            </div>
-
-                            <InputTextArea class="form-control bg-transparent text-light border border-primary"
-                                           style="min-height: 200px;"
-                                           @bind-Value="updatedPost.Content" />
-                            
-                            <label>Is Visible: </label><InputCheckbox class="form-check-input" @bind-Value="updatedPost.IsVisible" />
+                            <EditPost
+                                UpdatedPost="@updatedPost"
+                                OnDeletePhoto="HandlePhotoDeletion"
+                                OnPhotoChanged="HandlePhotoChanged"/>
                         }
                     </div>
                     <div class="card-footer bg-transparent border-top border-primary d-flex justify-content-end gap-2">
@@ -77,6 +56,12 @@
                         }
                         else
                         {
+                            <button class="btn btn-primary btn-sm px-3"
+                                    title="Add Photo"
+                                    @onclick="AddPhoto">
+                                <i class="bi bi-plus-square"></i> Add Photo
+                            </button>
+                            
                             <button class="btn btn-success btn-sm px-3"
                                     title="Save changes"
                                     @onclick="SavePost">
@@ -118,21 +103,56 @@
     [Parameter]
     public List<BlogPost> BlogPosts { get; set; }
     
+    bool editing = false;
+    BlogPost updatedPost;
+    
     void SelectPost(BlogPost post)
     {
         SelectedPost = post;
     }
 
+    async Task AddPhoto()
+    {
+        if (SelectedPost == null)
+            return;
+        
+        var newPhoto = new Photo()
+        {
+            BlogPost = SelectedPost,
+            BlogPostId = SelectedPost.Id
+        };
+        await PhotoService.AddPhotoAsync(newPhoto);
+        
+        StateHasChanged();
+    }
+    
+    async Task HandlePhotoDeletion(Photo photoToDelete)
+    {
+        await PhotoService.DeletePhotoAsync(photoToDelete);
+        await MinioService.DeletePhoto(photoToDelete);
+        
+        StateHasChanged();
+    }
+
+    async Task HandlePhotoChanged()
+    {
+        var changedPost = new BlogPost()
+        {
+            Photos = updatedPost.Photos
+        };
+        
+        await BlogPostService.UpdateBlogPostAsync(changedPost);
+        
+        StateHasChanged();
+    }
+    
     async Task DeletePost()
     {
         await BlogPostService.DeleteBlogPostAsync(SelectedPost);
         BlogPosts.Remove(SelectedPost);
         SelectedPost = BlogPosts.FirstOrDefault();
     }
-    
 
-    bool editing = false;
-    BlogPost updatedPost;
     
     void SwitchMode()
     {
@@ -143,7 +163,8 @@
             Goal = SelectedPost.Goal,
             Content = SelectedPost.Content,
             PublishDate = SelectedPost.PublishDate,
-            IsVisible = SelectedPost.IsVisible
+            IsVisible = SelectedPost.IsVisible,
+            Photos = SelectedPost.Photos
         };
         editing = !editing;
     }

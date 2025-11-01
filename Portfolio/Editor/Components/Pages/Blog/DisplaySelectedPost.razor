@@ -1,0 +1,62 @@
+@inject MinioService MinioService
+
+<div class="card shadow-sm border-0 my-4">
+    <div class="card-body">
+        <h2 class="card-title mb-2">@SelectedPost.Title</h2>
+
+        <div class="text-muted mb-3">
+            <small>
+                <i class="bi bi-calendar3"></i>
+                @SelectedPost.PublishDate.ToString("MMMM dd, yyyy")
+                &nbsp;•&nbsp;
+                <strong>Mål:</strong> @SelectedPost.Goal
+            </small>
+        </div>
+
+        <p class="card-text fs-5">@SelectedPost.Content</p>
+
+        @if (SelectedPost.Photos?.Count > 0)
+        {
+            <div class="photo-gallery mt-4">
+                <h5 class="mb-3"><i class="bi bi-images"></i> Photos</h5>
+        
+                <div class="row g-3">
+                    @foreach (var photo in SelectedPost.Photos)
+                    {
+                        <div class="col-12 col-sm-6 col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="@GetPhotoUrl(photo).Result"
+                                     alt="@photo.Description"
+                                     class="card-img-top rounded-top"
+                                     style="max-height: 250px; object-fit: cover;" />
+        
+                                <div class="card-body p-2">
+                                    <p class="card-text text-center text-muted small mb-0">
+                                        @photo.Description
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="mt-4">
+            <span class="badge @(SelectedPost.IsVisible ? "bg-success" : "bg-secondary")">
+                @(SelectedPost.IsVisible ? "Visible" : "Hidden")
+            </span>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public BlogPost SelectedPost { get; set; }
+    
+    async Task<string?> GetPhotoUrl(Photo photo)
+    {
+        return await MinioService.GetPhotoUrlAsync(photo);
+    }
+}

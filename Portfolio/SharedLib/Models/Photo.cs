@@ -1,13 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace SharedLib;
 
 public class Photo
 {
-    public Guid Id { get; private set; }
-    public string Description { get; set; }
-    public string BucketName { get; }
-    public string ObjectName { get; } // e.g. "photos/2025/10/myimage123.jpg"
+    public Guid Id { get; init; }
+    public string? Description { get; set; } = string.Empty;
+    public string? BucketName { get; set; }  = string.Empty;
+    public string? ObjectName { get; set; } = string.Empty;
     
     // Foreign key and navigation property
-    public int BlogPostId { get; set; }
-    public BlogPost BlogPost { get; set; } = null!;
+    public Guid BlogPostId { get; init; }
+    public BlogPost BlogPost { get; init; }
+    
 }

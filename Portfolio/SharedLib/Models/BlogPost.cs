@@ -2,7 +2,7 @@
 
 public class BlogPost
 {
-    public int Id { get; init; }
+    public Guid Id { get; init; }
     public string Title { get; set; }
     public string Goal { get; set; }
     public string Content { get; set; }

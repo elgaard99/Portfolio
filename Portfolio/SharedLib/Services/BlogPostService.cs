@@ -12,7 +12,7 @@ public class BlogPostService : IBlogPostService
         _context = context;
     }
 
-    public async Task<int> AddBlogPostAsync(BlogPost blogPost)
+    public async Task<Guid> AddBlogPostAsync(BlogPost blogPost)
     {
         _context.BlogPosts.Add(blogPost);
         await _context.SaveChangesAsync();
@@ -31,6 +31,7 @@ public class BlogPostService : IBlogPostService
         existing.Content = blogPost.Content;
         existing.PublishDate = blogPost.PublishDate;
         existing.IsVisible = blogPost.IsVisible;
+        existing.Photos = blogPost.Photos;
 
         await _context.SaveChangesAsync();
     }
@@ -48,6 +49,7 @@ public class BlogPostService : IBlogPostService
     public async Task<List<BlogPost>> GetBlogPostsAsync()
     {
         return await _context.BlogPosts
+            .Include(bp => bp.Photos)
             .OrderByDescending(b => b.PublishDate)
             .ToListAsync();
     }

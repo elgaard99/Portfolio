@@ -1,0 +1,57 @@
+@page "/blog"
+@using System.Data
+@inject IBlogPostService BlogPostService
+
+<PageTitle>Blog</PageTitle>
+
+@if (isLoading)
+{
+    <div class="text-center my-5">
+        <BBSpinner Color="SpinnerColor.Primary" Size="SpinnerSize.Medium" />
+        <p class="mt-2">Loading posts...</p>
+    </div>
+}
+else
+{
+    <DisplayPosts SelectedPost="@selectedPost" BlogPosts="@blogPosts"></DisplayPosts>
+    <button class="btn-primary" @onclick="AddPost">Add Post</button>
+}
+
+@code {
+    BlogPost? selectedPost;
+    List<BlogPost> blogPosts;
+    bool isLoading = true;
+
+    private async Task LoadPosts()
+    {
+        isLoading = true;
+        blogPosts = await BlogPostService.GetBlogPostsAsync();
+        isLoading = false;
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPosts();
+        selectedPost = blogPosts?
+            .OrderByDescending(p => p.PublishDate)
+            .FirstOrDefault();
+    }
+    
+    private async Task AddPost()
+    {
+        var newPost = new BlogPost()
+        {
+            Title = "Enter Title...",
+            Goal = "Enter Goal...",
+            Content = "Enter Content...",
+            PublishDate = DateTime.UtcNow,
+            IsVisible = false,
+            Photos = new List<Photo>()
+        };
+        
+        var id = await BlogPostService.AddBlogPostAsync(newPost);
+
+        await LoadPosts();
+        selectedPost = blogPosts.Find(p => p.Id == id);
+    }
+}

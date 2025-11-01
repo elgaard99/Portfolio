@@ -23,6 +23,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 // Add MinIO
 builder.Services.AddScoped<MinioService>(provider =>

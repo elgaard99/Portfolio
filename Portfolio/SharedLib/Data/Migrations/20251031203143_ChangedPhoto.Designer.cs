@@ -12,8 +12,8 @@ using SharedLib.Data;
 namespace SharedLib.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251031124206_AddedPhotoTable")]
-    partial class AddedPhotoTable
+    [Migration("20251031203143_ChangedPhoto")]
+    partial class ChangedPhoto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,9 @@ namespace SharedLib.Data.Migrations
 
             modelBuilder.Entity("SharedLib.BlogPost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -62,11 +60,16 @@ namespace SharedLib.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("BlogPostId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("BlogPostId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("BucketName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ObjectName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
