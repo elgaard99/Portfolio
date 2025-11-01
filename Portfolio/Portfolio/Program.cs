@@ -38,6 +38,16 @@ public class Program
         
         // Add services
         builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+        
+        // Add MinIO
+        builder.Services.AddScoped<MinioService>(provider =>
+            new MinioService(
+                logger: provider.GetRequiredService<ILogger<MinioService>>(),
+                endpoint: builder.Configuration["MinIo:Endpoint"],
+                accessKey: builder.Configuration["MinIo:AccessKey"],
+                secretKey: builder.Configuration["MinIo:SecretKey"]
+            )
+        );
 
         var app = builder.Build();
         
