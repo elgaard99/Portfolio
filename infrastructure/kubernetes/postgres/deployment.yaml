@@ -54,6 +54,11 @@ spec:
         volumeMounts:
         - name: postgres-data
           mountPath: /var/lib/postgresql/data
+      tolerations:
+        - key: "allowSchedule"
+          operator: "Exists"
+          effect: "NoSchedule"
+
   volumeClaimTemplates:
   - metadata:
       name: postgres-data
@@ -63,4 +68,3 @@ spec:
       resources:
         requests:
           storage: 20Gi
-

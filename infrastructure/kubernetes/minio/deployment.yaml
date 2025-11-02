@@ -52,6 +52,11 @@ spec:
         volumeMounts:
         - name: minio-data
           mountPath: /data
+      tolerations:
+      - key: "allowSchedule"
+        operator: "Exists"
+        effect: "NoSchedule"
+
   volumeClaimTemplates:
   - metadata:
       name: minio-data
