@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Services;
 using Portfolio.Components;
 using SharedLib;
 using SharedLib.Data;
 using SharedLib.Services;
+using StackExchange.Redis;
 
 namespace Portfolio;
 
@@ -13,9 +15,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
-        builder.Services.AddBlazorBootstrap();
-        builder.Services.AddLogging();
-        
+        // Add yaml service
         string[] supportedLanguages = { "en", "da", "fr" };
         builder.Services.AddScoped<YamlLocalizationService>(provider => 
             new YamlLocalizationService(
@@ -29,23 +29,34 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
         
-        // Add postgres db
-        var pgConnectionString = builder.Configuration.GetConnectionString("Postgres")
-            ?? throw new NullReferenceException("Postgres");
+        // Add postgres & redis
+        var configuration = builder.Configuration;
+        var redisConnString = configuration.GetConnectionString("Redis")
+            ?? throw new NullReferenceException("Redis connection string not found");
         
-        builder.Services.AddDbContext<AppDbContext>(options =>
+        var redis = ConnectionMultiplexer.Connect(redisConnString);
+        builder.Services.AddDataProtection()
+            .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys")
+            .SetApplicationName("GotorzApp");
+
+        var pgConnectionString = configuration.GetConnectionString("Postgres") 
+            ?? throw new NullReferenceException("Postgres connection string not found");
+        
+        builder.Services.AddPooledDbContextFactory<AppDbContext>(options =>
             options.UseNpgsql(pgConnectionString));
         
         // Add services
         builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+        builder.Services.AddBlazorBootstrap();
+        builder.Services.AddLogging();
         
         // Add MinIO
         builder.Services.AddScoped<MinioService>(provider =>
             new MinioService(
                 logger: provider.GetRequiredService<ILogger<MinioService>>(),
-                endpoint: builder.Configuration["MinIo:Endpoint"],
-                accessKey: builder.Configuration["MinIo:AccessKey"],
-                secretKey: builder.Configuration["MinIo:SecretKey"]
+                endpoint: builder.Configuration["MinIo:Endpoint"] ?? throw new NullReferenceException("MinIo:Endpoint"),
+                accessKey: builder.Configuration["MinIo:AccessKey"] ?? throw new NullReferenceException("MinIo:AccessKey"),
+                secretKey: builder.Configuration["MinIo:SecretKey"]  ?? throw new NullReferenceException("MinIo:SecretKey")
             )
         );
 

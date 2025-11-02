@@ -15,7 +15,7 @@ builder.Services.AddLogging();
 var pgConnectionString = builder.Configuration.GetConnectionString("Postgres")
                          ?? throw new NullReferenceException("Postgres");
         
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseNpgsql(pgConnectionString));
 
 // Add services to the container.
