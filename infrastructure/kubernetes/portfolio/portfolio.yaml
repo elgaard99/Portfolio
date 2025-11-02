@@ -18,7 +18,8 @@ spec:
         - name: blog 
           image: selgaard/boligsom:blog
           ports:
-            - containerPort: 8080 
+            - containerPort: 8080
+          imagePullPolicy: Always
       imagePullSecrets:
         - name: dockerhub-secret
 ---
