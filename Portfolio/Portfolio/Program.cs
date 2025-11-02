@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Portfolio.Services;
 using Portfolio.Components;
-using SharedLib;
 using SharedLib.Data;
 using SharedLib.Services;
 using StackExchange.Redis;
@@ -29,7 +28,7 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
         
-        // Add postgres & redis
+        // Add redis
         var configuration = builder.Configuration;
         var redisConnString = configuration.GetConnectionString("Redis")
             ?? throw new NullReferenceException("Redis connection string not found");
@@ -37,8 +36,15 @@ public class Program
         var redis = ConnectionMultiplexer.Connect(redisConnString);
         builder.Services.AddDataProtection()
             .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys")
-            .SetApplicationName("GotorzApp");
-
+            .SetApplicationName("Portfolio");
+        
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = redis.Configuration;
+            options.InstanceName = "Portfolio"; // optional namespace prefix
+        });
+        
+        // Add postgres
         var pgConnectionString = configuration.GetConnectionString("Postgres") 
             ?? throw new NullReferenceException("Postgres connection string not found");
         
@@ -50,10 +56,14 @@ public class Program
         builder.Services.AddBlazorBootstrap();
         builder.Services.AddLogging();
         
+        // Add HttpClient
+        builder.Services.AddHttpClient();
+        
         // Add MinIO
         builder.Services.AddScoped<MinioService>(provider =>
             new MinioService(
                 logger: provider.GetRequiredService<ILogger<MinioService>>(),
+                httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
                 endpoint: builder.Configuration["MinIo:Endpoint"] ?? throw new NullReferenceException("MinIo:Endpoint"),
                 accessKey: builder.Configuration["MinIo:AccessKey"] ?? throw new NullReferenceException("MinIo:AccessKey"),
                 secretKey: builder.Configuration["MinIo:SecretKey"]  ?? throw new NullReferenceException("MinIo:SecretKey")

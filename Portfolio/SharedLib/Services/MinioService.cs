@@ -9,11 +9,13 @@ public class MinioService
 {
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinioService> _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
     private readonly string _bucketName = "blog-photos";
 
-    public MinioService(ILogger<MinioService> logger, string endpoint, string accessKey, string secretKey)
+    public MinioService(ILogger<MinioService> logger, IHttpClientFactory httpClientFactory, string endpoint, string accessKey, string secretKey)
     {
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
         _minioClient = new MinioClient()
             .WithEndpoint(endpoint)
             .WithCredentials(accessKey, secretKey)
@@ -83,5 +85,39 @@ public class MinioService
         if (string.IsNullOrEmpty(photo.BucketName) || string.IsNullOrEmpty(photo.ObjectName))
             return false;
         return true;
+    }
+    
+    public async Task<byte[]> DownloadImageAsync(Photo photo)
+    {
+        // Get url
+        var imageUrl = await GetPhotoUrlAsync(photo);
+        if (string.IsNullOrEmpty(imageUrl))
+            return null;
+        _logger.LogInformation($"Downloading url: {imageUrl}");
+        
+        // Download bytes
+        byte[] imageBytes;
+        try
+        {
+            using var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync(imageUrl);
+            response.EnsureSuccessStatusCode();
+            _logger.LogInformation($"Downloaded image status code: {response.StatusCode}");
+            return await response.Content.ReadAsByteArrayAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            _logger.LogError(ex, "Failed to download image from {ImageUrl}", imageUrl);
+            throw;
+        }
+        //
+        // // Convert to string
+        // if (imageBytes != null && imageBytes.Length > 0)
+        //     return null;
+        //
+        // string base64Image = Convert.ToBase64String(imageBytes);
+        // string imageSrc = $"data:image/jpeg;base64,{base64Image}";
+        // return imageSrc;
+    
     }
 }

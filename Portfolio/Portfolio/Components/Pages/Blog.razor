@@ -2,6 +2,7 @@
 @using SharedLib.Services
 @inject IBlogPostService BlogPostService
 @inject MinioService MinioService
+@inject ILogger<Blog> Logger
 
 <PageTitle>Blog</PageTitle>
 
@@ -62,13 +63,18 @@ else
                                     @foreach (var photo in selectedPost.Photos)
                                     {
                                         <div class="photo-container text-center">
-                                            <img src="@GetPhotoUrl(photo).Result"
-                                                 alt="@photo.Description"
-                                                 class="img-fluid rounded border border-primary shadow-sm"
-                                                 style="max-width: 300px; height: auto;" />
-                                            @if (!string.IsNullOrWhiteSpace(photo.Description))
+                                            @if (photo.ImageSrc == null)
                                             {
-                                                <p class="mt-2 text-light small">@photo.Description</p>
+                                                <p>Loading image...</p>
+                                                @LoadImage(photo)
+                                            }
+                                            else
+                                            {
+                                                <img src="@photo.ImageSrc"
+                                                     alt="@photo.Description"
+                                                     class="img-fluid rounded border border-primary shadow-sm"
+                                                     style="max-width: 300px; height: auto;" />
+                                                <p>@(photo.Description ?? "")</p>
                                             }
                                         </div>
                                     }
@@ -116,39 +122,22 @@ else
         selectedPost = post;
     }
 
-    async Task<string?> GetPhotoUrl(Photo photo)
+    async Task LoadImage(Photo photo)
     {
-        return await MinioService.GetPhotoUrlAsync(photo);
+        photo.ImageSrc = await GetPhoto(photo);
+        StateHasChanged(); // re-render after image loads
+    }
+    
+    async Task<string?> GetPhoto(Photo photo)
+    {
+        var imageBytes = await MinioService.DownloadImageAsync(photo);
+        if (imageBytes != null && imageBytes.Length > 0)
+        {
+            Logger.LogInformation("Ready to convert bytes of lenght: {0}", imageBytes.Length);
+            string base64Image = Convert.ToBase64String(imageBytes);
+            string imageSrc = $"data:image/jpeg;base64,{base64Image}";
+            return imageSrc;
+        }
+        return null;
     }
 }
-
-    @* List<BlogPost> BlogPosts = new() *@
-    @* { *@
-    @*     new(1, "Uge 33", "Projektopstart og start på portefølje", *@
-    @*         "I denne uge har fokus været på at komme godt i gang med porteføljen og projekt. ft. projekt var fokus på at få en bedre forståelse af virksomheden og domænet. Vi har derfor arbejdet med business case, BMC og BPMN, samt fået lavet en objektmodel og domænemodel. Derudover fik vi opsat et kanban-board med definition of done til de enkelte koloner og sat de første tickets i backloggen.\nDet hjalp mig også til at finde mine første mål indenfor mine to områder - cloud-computing, devops (CI/CD) og it-sikkerhed. Indenfor CI/CD fik jeg til opgave at opsætte en pipeline, hvilket jeg løste med Github Actions. Jeg skulle også finde en måde at hoste vores webapp på, og her faldt jeg over infrastructure as code (IaC) og Terraform, der kan hjælpe med at vedligeholde og versionere vores infrastruktur.\nEfter at være gået i gang med Terraform, fandt jeg ud at der er temmelig mange kodeord og nøgler at holde styr på - og ikke mindst skjult, samtidig med at vi alle har adgang til dem.\nSå mine to mål er: 1. At blive komfortable med Terraform (evt. udvide med Ansible), og 2. At finde en måde at håndtere passwords på.",  *@
-    @*         new DateTime(2025, 8, 17)), *@
-    @*     new(2, "Secrets Management", "HashiCorp Vault og ZeroTrust", *@
-    @*         "Denne uge er gået med at få opsat på HashiCorps Vault, der skal tage sig af vores nøgler og logins, samt opsat roller hertil der skal gøre det nemt at administrere, hvem der har adgang til hvad. Til det er ZeroTrust ideelt da det handler om verificer eksplicit, least privileged og assume breach. Nu mangler bare en at få styr på auditing, så vi kan se, hvem der har til gået hvad og hvornår, samt lavet en backup plan, hvis uheldet skulle være ude. På den måde har vi nogle information at gå ud fra, hvis en konto skulle være blevet hacket, og en backup til at komme hurtigt online igen.\nNæste skridt er mere i devops retningen. Vi er nemlig kommet godt i gang med kodningen, og allerede nu har vi udfordringer med at vi alle skal have en database der up to date og ens. Derfor vil jeg kigge mere ind i at få sat et udviklings-miljø op.",  *@
-    @*         new DateTime(2025, 8, 24)), *@
-    @*     new(3, "Dev Environment", "At oprette et test-miljø, hvor der er adgang til en database med test-data.",  *@
-    @*         "I starten fik jeg vejledning af AI, der hurtigt fik mig på sporet af at en Docker container formentlig var det bedste valg her. Jeg kunne også gå med at spinde en server op til hver af os, som vi kunne arbejde i. Først fik jeg lavet en docker-compose, der startede ud med en mssql-server, og som gemte ændringer til database-schemaet, men udfordringen bestod i at få seed'et en database. Til sidst lavede jeg en Dockerfile, der kopierede en hel database ind i image'et, hvorefter compose kørte et script - log ind på serveren, og kør et SQL-statement, der tilføjede databasen til serveren.",  *@
-    @*         new DateTime(2025, 8, 31)),  *@
-    @*     new(4, "Hosting-model", "At se på forskellige hosting-modeller og finde pro/cons.",  *@
-    @*         "Jeg har brugt tiden på at finde en passende hosting-model for vores system. Dette er fordi vi snart er klar med en første version.\nEfter sparring med gruppen, chat med AI og diverse artikler, er vi endt med at en containerisering (Docker), er det mest praktiske valg. Dette fordi det gør det nemt for de andre i gruppen at bygge en produktions klar container og teste denne. Men også fordi det gør det nemt at udrulle i et staging- og produktions-miljø, om det så er i skyen eller on-premise.\n\nCloud: Det nemme valg ift. cloud vs on-premise er skyen. Dette fordi det tager meget af ansvaret for systemvedligehold og skalering fra os. Vi skal ikke tænke på om en server går ned eller om vi skal bruge flere ressourcer, da det hurtigt kan klares vi UI eller Terraform. Derudover integrerer Azure nemt med Github, så udrulning sker helt automatisk.\n\nOn-premise: Her tænkes på hosting op egne servere. Dette giver mere ansvar ift. systemovervågning, for at sikre sig at et anomalier opdages. Det giver også nogle udfordringer ift. skalering og high availability (HA), hvor et et strøm- eller internetnedbrud, dræber vores service - såfremt den ikke er spredt over flere lokationer.\nDerimod er on-premise en billigere form for hosting, når først serverne er købt.",  *@
-    @*         new DateTime(2025, 9, 2)),  *@
-    @*     new(5, "Implementering af Vault", "Api'servicen kan hente nødvendige secrets fra Vault",  *@
-    @*         "I denne uge har jeg berørt emner som threading, secret-rotation og role-based access control (RBAC). Ifm. at vores api (backend) skal kommunikere med vores database, skal den bruge en connections string og login. Dette login sørger Vault for at oprette i databasen, og slette igen efter dets time to live (TTL), så for at backend'en fortsat kan have adgang, skal et logins lease enten fornys eller et nyt login skal hentes. For at begrænse oprettelsen af login og oprettelsen af nye leases i Vault, anbefaler Vault at man fornyer leases indtil maks TTL.\nDette kan gøres med en Vault Agent, der kan være en side-car/container sammen med backend'en. Jeg valgte dog at undersøge muligheden for selv at håndtere secrets, hvilket indebærer at der er en long running task i C#, der automatisk kalder vaults api for at forny en lease eller token. Det foregør ved at backend'en starter med et role og secret id, der er knyttet til en approle i Vault. Vi kan derfor sørge for at vores approle kun har adgang til bestemte secrets i Vault via policies, og vores approle har derfor kun fået adgang til database credentials for en pre-defineret database rolle.\nMed denne approle henter backenden først en token, som den herefter fornyer løbende og et sæt credentials til databasen med tilhørende lease. Dette lease har et maks TTL, og når lease'et ikke længere kan fornys, hentes et nyt sæt credentials.",  *@
-    @*         new DateTime(2025, 9, 7)),  *@
-    @*     new(6, "Systemovervågning", "At kunne spotte nedbrud, hurtigt udbedre bugs og lave forensics ifm. angreb",  *@
-    @*         "I denne uge har jeg arbejdet med at opbygge et samlet overvågnings-setup med Prometheus, Grafana, Loki, Jaeger og OpenTelemetry. Målet var at visualisere telemetry et samlet sted.\nJeg startede med at sætte Prometheus op til at indsamle metrics fra vores applikationer og infrastruktur. Disse metrics bliver derefter sendt til en OpenTelemetry Collector, hvor de bliver behandlet og distribueret til én Prometheus backend, hvorefter de kan blive visualiseret i Grafana, hvor jeg oprettede dashboards, der giver et hurtigt overblik over CPU, hukommelse, svartider og andre metrics de forskellige services genererer. Det var nødvendigt at se på de enkelte services metrics, for at få et samlet overblik over dets tilstand.\nhttps://developer.hashicorp.com/vault/docs/internals/telemetry/key-metrics?page=reliability&page=reliability-vault-monitoring-key-metrics\nhttps://linuxblog.io/5-database-metrics-every-dba-should-monitor-for-peak-performance/\n\nDernæst integrerede jeg Loki til central indsamling af logs. Det betyder, at vi kan søge og filtrere på logs på tværs af hele systemet ét sted, hvilket gør fejlfinding langt nemmere.\nFor at få indsigt i, hvordan requests bevæger sig i gennem systemet, brugte jeg Jaeger til tracing. Det giver et klart billede af hvor lang tid de enkelte spans tager og se sammenhængen i mellem vores services.\nVed at benytte OpenTelemetrys som en standard, kan vi nemmere adminstrere logs, traces og metrics fra forskellige services, samtidig med at vi nemmere kan tilføje services. Er dette strengt nødvendigt? Nok ikke, når vores system ikke er større end det er, men med implementeringen, gør det også experimentet med Kubernetes lettere.",  *@
-    @*         new DateTime(2025, 9, 14)), *@
-    @*     new(7, "Opstart af Kubernetes", "Valg af en Kubernetes distribution",  *@
-    @*         "Som det første har målet været at finde ud af, hvad Kubernetes eller bare K8s er. Og k8s er ikke bare en enkelt service, som en database eller firewall er. Den består af flere komponenter, der kan udskiftes efter behov. På en cluster node skal der altid være: en kubelet, der snakker sammen med Linux systemd og Container Runtime Interface (CRI), til at starte og kører containere, og Container Network Interface (CNI), så clusteren kan adminstrere et netværk. Derudover skal der være nogle \"static-pods\" til stede på control-nodes. En api-server, som en client - UI eller CLI - taler til, en etcd pod der indeholder \"desired state\" på clusteren, en scheduler til at starte og stoppe pods på worker-nodes og en controller til at få clusteren til at leve op til \"desired state\".\nK8s distros kommer med forskellige komponenter for at give forskellige tilpasningsmuligligheder, eller simplificere opsætning og administration af en cluster. Cloud providers har også deres egen distros AWS har EKS, Azure har AKS og Google Cloud har GKE, og modsat er der minimale distris som Minikube og K3s. Den basale k8s fra Cloud Native Computing Foundation hedder Vanilla.\n\nI og med vores projekt er et proof of concept, og bliver hostet on-prem, var cloud distroerne ikke mulige, men for at komme så tæt på et virkelighedsnært setup som muligt har jeg valgt at Vanilla med Containerd som CRI og Calico som CNI. Dette giver en lidt stejlere læringskurve, og derfor også til at tage lidt længere tid, men det giver også fuld frihed til opsætning.", *@
-    @*         new DateTime(2025, 9, 29)), *@
-    @*     new(8, "Opstart af Kubernetes, part 2", "Setup af en HA cluster", *@
-    @*         "En k8s cluster består af minimum én control-node og to worker-nodes. Control nodens opgave er at holde styr på tilstanden på ens services/pods, opstart og afvikling af dem og tage imod ændringer ift. tilstanden, hvor worker-nodes bare er til at køre pods.\nDet er derfor også nemt at udskifte worker-nodes i en cluster, hvis de skulle fejle fordi tilstanden gemmes på control-noden. Det betyder dog også at der er et single point of failure, hvis control-noden skulle støde på en fejl. Det er derfor vigtigt at tage backup af ens etcd - eller databasen, der gemmer desired-state af ens cluster - for hurtigt at kunne genskabe en control-node.\nMan kan dog også sætte flere control-noder op for på den måde ikke at miste hele sin cluster, hvis control-noden skulle støde på en fejl. Dette bringer imidlertid flere komplikationer til da, desired state ikke længere kun gemmes ét sted, men på flere control-noder, der så skal sørge for at være i sync. Der er to måder at opnå en HA cluster: Enten ved \"stacked-topology\", hvor minimum tre normale control-nodes, forbindes med en token og en af dem agerer leader. På den måde fungerer de to ekstra noder (followers) som backup for leader. Sync af etcd opretholdes ved at det kun er leader'eren der kan skrives til.\nDen anden metode er magen til, men med etcd på seperate noder. På den måde undgår man at ens etcd går ned, noget andet på control-noden skulle fejle, men man skal i så fald have det dobelte antal noder (2x3).", *@
-    @*         new DateTime(2025, 10, 10)), *@
-    @*     new(9, "Kubernetes ressourcer", "Deployment af vores services", *@
-    @*         "Første del mål var at få vores frontend og backend op og køre som services, der kan til gås udefra. Det er flere måder at gøre dette på, enten ved manuelt at starte en services via CLI, hvor antal replicas image angives. En anden og mere dynamisk måde er ved hjælp af HELM, der er en form for package manager for k8s, ved at samle filer der beskriver ressourcer i k8s. Ved at bruge HELM kan man derfor nemmere versionere og udrulle services i sin cluster. En tredje mulighed er configuration i yaml filer, som jeg er gået med. Det er mere arbejde i at skulle udrulle nye versioner af sit image, eller ændringer til konfigurationen, men ens yaml-filer kan stadigvæk samles i et Git-repo, der versioneres, og images kan versioneres vha. tags.\nEfter at have udrullet vores frontend og backend, var spørgsmålet om vores database også skulle hostes via k8s, da databasen i modsætning til de andre services ikke er stateless, og har brug for persistent storage. K8s tilbyder flere muligheder for volumes, men hvis databasen får en NFS eller cloud-storage, risikerer man at løbe ind i en flaskehals længere nede af vejen fordi databasen i så fald er afhængig af netværk og bandwidth.\nEn anden mulighed er at \"låse\" databasen til en node i clusteren, og oprette et lokal volume, der giver databasen direkte adgang til en disk, men hvorfor så hoste databasen i k8s og ikke på sin egen dedikerede server. Jeg har valgt at tilføje ekstra node til clusteren, hvor databasen bliver den eneste pod og med en lokal volume. Dette fordi jeg ønsker at samle alle vores services ét sted, men alligevel have databasen for sig, så vi ikke risikerer at en anden pod crasher og tager databasen med.", *@
-    @*         new DateTime(2025, 10, 26)), *@
-    @* }; *@

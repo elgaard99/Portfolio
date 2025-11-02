@@ -9,6 +9,8 @@ public class Photo
     public string? BucketName { get; set; }  = string.Empty;
     public string? ObjectName { get; set; } = string.Empty;
     
+    public string? ImageSrc { get; set; }  = null;
+    
     // Foreign key and navigation property
     public Guid BlogPostId { get; init; }
     public BlogPost BlogPost { get; init; }

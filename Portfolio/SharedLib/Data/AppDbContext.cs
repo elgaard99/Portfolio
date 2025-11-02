@@ -17,6 +17,7 @@ public class AppDbContext : DbContext
 
         // BlogPost–Photo relationship
         modelBuilder.Entity<Photo>()
+            .Ignore(p => p.ImageSrc)
             .HasOne(p => p.BlogPost)
             .WithMany(b => b.Photos)
             .HasForeignKey(p => p.BlogPostId)
