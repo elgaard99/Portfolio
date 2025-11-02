@@ -1,0 +1,39 @@
+# backend.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blog 
+  namespace: portfolio 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blog 
+  template:
+    metadata:
+      labels:
+        app: blog 
+    spec:
+      containers:
+        - name: blog 
+          image: selgaard/boligsom:blog
+          ports:
+            - containerPort: 8080 
+      imagePullSecrets:
+        - name: dockerhub-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blog 
+  namespace: portfolio 
+spec:
+  selector:
+    app: blog 
+  ports:
+    - port: 8080 
+      targetPort: 8080
+      nodePort: 30010
+  type: NodePort 
+
+
