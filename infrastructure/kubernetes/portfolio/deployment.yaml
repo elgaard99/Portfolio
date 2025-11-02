@@ -22,7 +22,9 @@ spec:
           imagePullPolicy: Always
       imagePullSecrets:
         - name: dockerhub-secret
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -36,5 +38,4 @@ spec:
       targetPort: 8080
       nodePort: 30010
   type: NodePort 
-
-
+  sessionAffinity: ClientIP

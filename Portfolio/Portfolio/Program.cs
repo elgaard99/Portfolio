@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Portfolio.Services;
 using Portfolio.Components;
 using SharedLib.Data;
@@ -64,6 +66,7 @@ public class Program
             new MinioService(
                 logger: provider.GetRequiredService<ILogger<MinioService>>(),
                 httpClientFactory: provider.GetRequiredService<IHttpClientFactory>(),
+                cache: provider.GetRequiredService<IDistributedCache>(),
                 endpoint: builder.Configuration["MinIo:Endpoint"] ?? throw new NullReferenceException("MinIo:Endpoint"),
                 accessKey: builder.Configuration["MinIo:AccessKey"] ?? throw new NullReferenceException("MinIo:AccessKey"),
                 secretKey: builder.Configuration["MinIo:SecretKey"]  ?? throw new NullReferenceException("MinIo:SecretKey")

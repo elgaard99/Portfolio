@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
@@ -10,12 +13,14 @@ public class MinioService
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinioService> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IDistributedCache _cache;
     private readonly string _bucketName = "blog-photos";
 
-    public MinioService(ILogger<MinioService> logger, IHttpClientFactory httpClientFactory, string endpoint, string accessKey, string secretKey)
+    public MinioService(ILogger<MinioService> logger, IHttpClientFactory httpClientFactory, IDistributedCache cache, string endpoint, string accessKey, string secretKey)
     {
         _logger = logger;
         _httpClientFactory = httpClientFactory;
+        _cache = cache;
         _minioClient = new MinioClient()
             .WithEndpoint(endpoint)
             .WithCredentials(accessKey, secretKey)
@@ -89,6 +94,15 @@ public class MinioService
     
     public async Task<byte[]> DownloadImageAsync(Photo photo)
     {
+        // check if cached
+        var cacheKey = $"{photo.BucketName}/{photo.ObjectName}";
+        var cached = await _cache.GetAsync(cacheKey);
+        if (cached != null)
+        {
+            _logger.LogInformation($"Returned cached photo: {cacheKey}");
+            return cached;
+        }
+
         // Get url
         var imageUrl = await GetPhotoUrlAsync(photo);
         if (string.IsNullOrEmpty(imageUrl))
@@ -103,21 +117,22 @@ public class MinioService
             var response = await client.GetAsync(imageUrl);
             response.EnsureSuccessStatusCode();
             _logger.LogInformation($"Downloaded image status code: {response.StatusCode}");
-            return await response.Content.ReadAsByteArrayAsync();
+            imageBytes = await response.Content.ReadAsByteArrayAsync();
         }
         catch (HttpRequestException ex)
         {
             _logger.LogError(ex, "Failed to download image from {ImageUrl}", imageUrl);
             throw;
         }
-        //
-        // // Convert to string
-        // if (imageBytes != null && imageBytes.Length > 0)
-        //     return null;
-        //
-        // string base64Image = Convert.ToBase64String(imageBytes);
-        // string imageSrc = $"data:image/jpeg;base64,{base64Image}";
-        // return imageSrc;
-    
+        
+        // cache photo
+        var options = new DistributedCacheEntryOptions
+        {
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+        };
+        
+        await _cache.SetAsync(cacheKey, imageBytes, options);
+        _logger.LogInformation($"Cached photo: {cacheKey}");
+        return imageBytes;
     }
 }
