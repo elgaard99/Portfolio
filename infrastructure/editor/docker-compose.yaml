@@ -1,0 +1,27 @@
+services:
+  editor:
+    image: editor:prod
+    container_name: editor 
+    networks:
+      portfolio:
+        ipv4_address: 10.2.0.2
+    ports:
+      - "80:8080"
+  
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      portfolio:
+        ipv4_address: 10.2.0.3
+    ports:
+      - "6379:6379"
+
+networks:
+  portfolio:
+    external: true
+    name: portfolio
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.2.0.0/24
